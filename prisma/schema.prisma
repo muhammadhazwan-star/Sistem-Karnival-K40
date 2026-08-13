@@ -1,0 +1,145 @@
+// Portal Digital Karnival 40 Tahun PPAAB
+// Prisma Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model EventInfo {
+  id          String   @id @default("event")
+  name        String
+  tagline     String
+  date        DateTime
+  endDate     DateTime
+  location    String
+  venue       String
+  description String
+  coverImage  String?
+  logoText    String
+  // event status: auto | before | live | after
+  statusMode  String   @default("auto")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ScheduleItem {
+  id        String   @id @default(cuid())
+  time      DateTime
+  endTime   DateTime?
+  title     String
+  speaker   String?
+  category  String   @default("utama")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  startTime   DateTime
+  endTime     DateTime?
+  location    String
+  description String
+  status      String   @default("upcoming") // upcoming | live | ended
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  type      String   @default("info") // info | urgent | update
+  pinned    Boolean  @default(false)
+  published Boolean  @default(true)
+  author    String   @default("Urusetia Karnival")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GalleryPhoto {
+  id                String   @id @default(cuid())
+  contributorName   String
+  imageUrl          String
+  caption           String?
+  status            String   @default("pending") // pending | approved | rejected
+  highlight         Boolean  @default(false)
+  highlightCategory String?  // Best Moment | 40th Anniversary | Family Moment | Student Moment | Teacher Moment | Alumni Moment | Community Moment
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Ucapan {
+  id          String   @id @default(cuid())
+  authorName  String
+  role        String   @default("Komuniti") // Alumni | Guru | Ibu Bapa | Murid | Komuniti
+  content     String
+  status      String   @default("pending") // pending | approved | rejected
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Booth {
+  id             String   @id @default(cuid())
+  name           String
+  category       String
+  location       String
+  description    String
+  activities     String
+  operatingHours String
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model MapLocation {
+  id          String   @id @default(cuid())
+  name        String
+  type        String // Main Stage | Registration | Food Area | Booth | Competition Area | Kids Area | Parking | Surau | Medical | Toilet | Information
+  description String
+  x           Float    // percentage position 0-100
+  y           Float    // percentage position 0-100
+  icon        String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model JourneyItem {
+  id          String   @id @default(cuid())
+  year        String
+  phase       String
+  description String
+  milestone   String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id            String   @id @default("settings")
+  galleryMode   String   @default("auto") // auto | approval
+  ucapanMode    String   @default("approval") // auto | approval
+  portalUrl     String   @default("https://karnival40.alaamin.edu.my")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
