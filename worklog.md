@@ -230,3 +230,28 @@ Work Log:
 Stage Summary:
 - Official K40 anniversary logo integrated into navigation, hero, and footer.
 - Reusable K40Logo component available for future use across portal.
+
+---
+Task ID: 12
+Agent: main
+Task: Insert official atur cara, fix hero background (no text), rename "Empat Teras" → "Digital Experience with Al-Amin"
+
+Work Log:
+- Analyzed uploaded atur cara poster via VLM — extracted official schedule with all speaker names
+- Updated DB ScheduleItem table with official atur cara: "Ketibaan dif-dif kehormat", "Johan Pertandingan Nasyid K40", and added speakers:
+  - Ucapan Aluan Pengarah Program → Tn. Hj Muhammad Fakharuddin bin Abdul Kudos (CEO PPAAB)
+  - Ucapan Pengurus PPAAB → Dr. Hj. Shaharom bin Md Shariff (Pengurus PPAAB) [was "Ucapan Pengerusi PPAAB"]
+  - Ucapan Perasmian Penutup → Tn. Hj. Hanifuddin bin Roslan (Pengarah JAWI)
+- Updated seed.ts for consistency
+- Regenerated hero-gala.jpg with explicit "no text, no letters, no characters, no writing" prompt — verified via VLM: "NO text, letters, characters, or writing of any kind"
+- Changed "Empat Teras Pengalaman" → "Digital Experience with Al-Amin" with updated descriptions
+- Added official institutional logos to footer: Sekolah Rendah Islam Al-Amin + Edu Oasis Al-Amin Sdn Bhd + K40
+- Added social media handle @karnival40tahunppaab with Facebook/Instagram/TikTok icons (from official poster)
+- Verified via Agent Browser: atur cara shows speakers, Digital Experience heading, footer logos, social handle, no errors
+- Lint passes clean
+
+Stage Summary:
+- Official atur cara with VIP speakers now in DB and displayed.
+- Hero background is pure ornamental maroon/gold Islamic gala design (no text artifacts).
+- "Digital Experience with Al-Amin" replaces "Empat Teras Pengalaman".
+- Footer now shows all official logos + @karnival40tahunppaab social handle.

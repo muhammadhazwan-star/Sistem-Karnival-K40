@@ -63,16 +63,16 @@ async function main() {
     },
   })
 
-  // 4. Schedule items (official atur cara)
+  // 4. Schedule items (official atur cara from poster)
   const schedule = [
     { t: [18, 30], title: 'Pendaftaran', cat: 'protokol' },
-    { t: [19, 45], title: 'Ketibaan Tetamu Kehormat', cat: 'protokol' },
+    { t: [19, 45], title: 'Ketibaan dif-dif kehormat', cat: 'protokol' },
     { t: [20, 0], title: 'Alunan Al-Quran', cat: 'utama' },
     { t: [20, 5], title: 'Aluan Pengerusi Majlis', cat: 'utama' },
-    { t: [20, 10], title: 'Majlis Makan Malam, Persembahan Johan Nasyid K40 & Artis Jemputan RABITHAH', cat: 'persembahan' },
-    { t: [20, 30], title: 'Ucapan Aluan Pengarah Program', cat: 'ucapan' },
-    { t: [20, 40], title: 'Ucapan Pengerusi PPAAB', cat: 'ucapan' },
-    { t: [20, 50], title: 'Ucapan Perasmian Penutup', cat: 'ucapan' },
+    { t: [20, 10], title: 'Majlis Makan Malam, Persembahan Johan Pertandingan Nasyid K40 & Persembahan Artis Jemputan RABITHAH', cat: 'persembahan' },
+    { t: [20, 30], title: 'Ucapan Aluan Pengarah Program', speaker: 'Tn. Hj Muhammad Fakharuddin bin Abdul Kudos, Ketua Pegawai Eksekutif Pusat Pendidikan Al-Amin Berhad', cat: 'ucapan' },
+    { t: [20, 40], title: 'Ucapan Pengurus PPAAB', speaker: 'Dr. Hj. Shaharom bin Md Shariff, Pengurus Pusat Pendidikan Al-Amin Berhad', cat: 'ucapan' },
+    { t: [20, 50], title: 'Ucapan Perasmian Penutup', speaker: 'Tn. Hj. Hanifuddin bin Roslan, Pengarah Jabatan Agama Islam Wilayah Persekutuan', cat: 'ucapan' },
     { t: [21, 10], title: 'Pelancaran Al-Amin 3.0 & Peluncuran Buku Coffee Table', cat: 'istimewa' },
     { t: [21, 20], title: 'Slot Istimewa bersama PU Riz', speaker: 'PU Riz', cat: 'istimewa' },
     { t: [21, 25], title: 'Tayangan Montaj 40 Tahun PPAAB', cat: 'istimewa' },

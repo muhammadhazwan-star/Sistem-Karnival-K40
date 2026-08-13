@@ -317,19 +317,19 @@ export function Beranda() {
           </section>
         )}
 
-        {/* Core Experience — 4 Pillars */}
+        {/* Digital Experience with Al-Amin */}
         <section>
           <SectionHeader
             icon={Sparkles}
-            title="Empat Teras Pengalaman"
-            subtitle="Digital Carnival Experience"
+            title="Digital Experience with Al-Amin"
+            subtitle="Pengalaman digital sepanjang Karnival 40 Tahun"
           />
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6">
             {[
-              { label: 'DISCOVER', desc: 'Ketahui apa yang berlaku', icon: Compass, color: 'from-amber-500/20 to-amber-700/10' },
-              { label: 'PARTICIPATE', desc: 'Sertai aktiviti karnival', icon: Radio, color: 'from-rose-500/20 to-rose-700/10' },
-              { label: 'SHARE', desc: 'Kongsi momen anda', icon: Camera, color: 'from-emerald-500/20 to-emerald-700/10' },
-              { label: 'REMEMBER', desc: 'Kenang selamanya', icon: Sparkles, color: 'from-purple-500/20 to-purple-700/10' },
+              { label: 'DISCOVER', desc: 'Terokai atur cara & aktiviti karnival', icon: Compass, color: 'from-amber-500/20 to-amber-700/10' },
+              { label: 'PARTICIPATE', desc: 'Sertai pengalaman digital Al-Amin', icon: Radio, color: 'from-rose-500/20 to-rose-700/10' },
+              { label: 'SHARE', desc: 'Kongsi momen ke Live Gallery', icon: Camera, color: 'from-emerald-500/20 to-emerald-700/10' },
+              { label: 'REMEMBER', desc: 'Kenang 40 Tahun Al-Amin selamanya', icon: Sparkles, color: 'from-purple-500/20 to-purple-700/10' },
             ].map((p, i) => {
               const Icon = p.icon
               return (
