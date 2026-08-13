@@ -27,12 +27,17 @@ export const api = {
   journey: () => request<any[]>('/journey'),
   settings: () => request<any>('/settings'),
   status: () => request<{ status: string; event: any }>('/status'),
+  live: () => request<{ posts: any[] }>('/live'),
 
   // Public submissions
   uploadPhoto: (data: FormData) =>
     fetch(`${BASE}/gallery`, { method: 'POST', body: data }).then((r) => r.json()),
   submitUcapan: (data: { authorName: string; role: string; content: string }) =>
     request<any>('/ucapan', { method: 'POST', body: JSON.stringify(data) }),
+  createLivePost: (data: FormData) =>
+    fetch(`${BASE}/live`, { method: 'POST', body: data }).then((r) => r.json()),
+  createLiveText: (data: { authorName: string; content: string }) =>
+    request<any>('/live', { method: 'POST', body: JSON.stringify(data) }),
 
   // Admin auth
   login: (data: { username: string; password: string }) =>

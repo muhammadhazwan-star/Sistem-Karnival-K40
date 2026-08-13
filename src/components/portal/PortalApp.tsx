@@ -9,25 +9,19 @@ import { ShareDialog } from './ShareDialog'
 import { UploadDialog } from './UploadDialog'
 import { Beranda } from './views/Beranda'
 import { AturCara } from './views/AturCara'
-import { Aktiviti } from './views/Aktiviti'
 import { Pengumuman } from './views/Pengumuman'
 import { Galeri } from './views/Galeri'
 import { Ucapan } from './views/Ucapan'
-import { Peta } from './views/Peta'
-import { Booth } from './views/Booth'
-import { Perjalanan } from './views/Perjalanan'
+import { BukuProgram } from './views/BukuProgram'
 import { Admin } from './views/Admin'
 
 const VIEWS = {
   beranda: Beranda,
   'atur-cara': AturCara,
-  aktiviti: Aktiviti,
   pengumuman: Pengumuman,
   galeri: Galeri,
   ucapan: Ucapan,
-  peta: Peta,
-  booth: Booth,
-  perjalanan: Perjalanan,
+  'buku-program': BukuProgram,
   admin: Admin,
 } as const
 

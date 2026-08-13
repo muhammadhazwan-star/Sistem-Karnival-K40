@@ -7,13 +7,14 @@ export type BroadcastType =
   | 'gallery:update'
   | 'announcement:new'
   | 'announcement:update'
+  | 'live:new'
 
-export async function broadcast(type: BroadcastType): Promise<void> {
+export async function broadcast(type: BroadcastType, data?: unknown): Promise<void> {
   try {
     await fetch('http://localhost:3003/broadcast', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type }),
+      body: JSON.stringify({ type, data }),
     })
   } catch {
     // Real-time service unavailable — silently ignore

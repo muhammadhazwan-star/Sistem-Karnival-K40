@@ -5,13 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home,
   CalendarClock,
-  Compass,
   Megaphone,
   Images,
   MessageSquareHeart,
-  MapPin,
-  Store,
-  Milestone,
+  BookOpen,
   Shield,
   Menu,
   X,
@@ -25,13 +22,10 @@ import { K40Logo } from './K40Logo'
 const NAV_ITEMS: { id: PortalView; label: string; icon: typeof Home }[] = [
   { id: 'beranda', label: 'Beranda', icon: Home },
   { id: 'atur-cara', label: 'Atur Cara', icon: CalendarClock },
-  { id: 'aktiviti', label: 'Aktiviti', icon: Compass },
   { id: 'pengumuman', label: 'Pengumuman', icon: Megaphone },
   { id: 'galeri', label: 'Galeri', icon: Images },
   { id: 'ucapan', label: 'Ucapan', icon: MessageSquareHeart },
-  { id: 'peta', label: 'Peta', icon: MapPin },
-  { id: 'booth', label: 'Booth', icon: Store },
-  { id: 'perjalanan', label: 'Perjalanan', icon: Milestone },
+  { id: 'buku-program', label: 'Buku Program', icon: BookOpen },
 ]
 
 export function Navigation() {

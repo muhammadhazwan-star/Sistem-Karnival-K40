@@ -111,13 +111,10 @@ export interface Setting {
 export type PortalView =
   | 'beranda'
   | 'atur-cara'
-  | 'aktiviti'
   | 'pengumuman'
   | 'galeri'
   | 'ucapan'
-  | 'peta'
-  | 'booth'
-  | 'perjalanan'
+  | 'buku-program'
   | 'admin'
 
 export const HIGHLIGHT_CATEGORIES = [

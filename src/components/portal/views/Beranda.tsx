@@ -19,6 +19,7 @@ import { getCountdown, fmtTime, fmtTimeShort } from '@/lib/format'
 import { Button } from '@/components/ui/button'
 import { useSocket } from '@/hooks/use-socket'
 import { K40Logo } from '../K40Logo'
+import { LiveWall } from '../LiveWall'
 
 export function Beranda() {
   const { setView, setUploadOpen } = usePortal()
@@ -287,6 +288,9 @@ export function Beranda() {
           </div>
         </section>
 
+        {/* Live Wall — real-time photo + text updates */}
+        <LiveWall />
+
         {/* Latest Announcement */}
         {latestAnn && (
           <section>
@@ -339,7 +343,7 @@ export function Beranda() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  onClick={() => setView(p.label === 'SHARE' ? 'galeri' : p.label === 'DISCOVER' ? 'atur-cara' : p.label === 'PARTICIPATE' ? 'aktiviti' : 'perjalanan')}
+                  onClick={() => setView(p.label === 'SHARE' ? 'galeri' : p.label === 'DISCOVER' ? 'atur-cara' : p.label === 'PARTICIPATE' ? 'galeri' : 'ucapan')}
                   className={`glass rounded-2xl p-4 sm:p-5 text-left bg-gradient-to-br ${p.color} hover:scale-[1.03] transition-transform`}
                 >
                   <Icon className="h-6 w-6 text-gold mb-3" />

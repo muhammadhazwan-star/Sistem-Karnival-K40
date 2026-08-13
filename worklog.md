@@ -255,3 +255,29 @@ Stage Summary:
 - Hero background is pure ornamental maroon/gold Islamic gala design (no text artifacts).
 - "Digital Experience with Al-Amin" replaces "Empat Teras Pengalaman".
 - Footer now shows all official logos + @karnival40tahunppaab social handle.
+
+---
+Task ID: 13
+Agent: main
+Task: Remove 4 tabs (Perjalanan/Booth/Peta/Aktiviti), add Buku Program tab (Canva embed), add Live Wall to Beranda
+
+Work Log:
+- Added LivePost model to Prisma schema (authorName, content, imageUrl, type: text|photo|both)
+- Pushed schema + seeded 6 initial live posts
+- Created /api/live route: GET (fetch recent posts) + POST (create post with optional image, broadcasts 'live:new' via socket.io)
+- Updated broadcast.ts to support 'live:new' event type with data payload
+- Added useLive hook + api.createLivePost/createLiveText methods
+- Removed Aktiviti, Peta, Booth, Perjalanan from Navigation NAV_ITEMS
+- Removed corresponding views from PortalApp VIEWS map
+- Created BukuProgram view: embeds Canva link (https://canva.link/giv0dxr90ux77v4) in iframe with loading state + fallback button
+- Created LiveWall component: real-time feed with composer (name + text + optional photo upload), socket.io integration for instant updates, avatar + post cards with type badges
+- Added LiveWall to Beranda (after What's Happening Now, before Latest Announcement)
+- Fixed Digital Experience click handlers (removed references to deleted views)
+- Updated footer quick links (removed Perjalanan, added Buku Program)
+- Verified via Agent Browser: 6 nav tabs correct, 4 old views removed, Live Wall with posts, Buku Program Canva embed, Digital Experience heading
+- Tested live post creation via API (201 response, broadcast works)
+
+Stage Summary:
+- Navigation simplified to 6 tabs: Beranda, Atur Cara, Pengumuman, Galeri, Ucapan, Buku Program
+- Buku Program embeds the Canva link in an iframe
+- Beranda now has "Karnival Live" wall — visitors can post text greetings/feelings AND upload photos that appear in real-time via socket.io
