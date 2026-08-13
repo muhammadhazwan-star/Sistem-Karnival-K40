@@ -2,6 +2,7 @@
 
 import { Heart, MapPin, Calendar } from 'lucide-react'
 import { usePortal } from '@/lib/store'
+import { K40Logo } from './K40Logo'
 
 export function Footer() {
   const { setView } = usePortal()
@@ -13,12 +14,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="relative h-8 w-8">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gold to-gold-deep" />
-                <div className="absolute inset-[2px] rounded-full bg-maroon-dark flex items-center justify-center">
-                  <span className="font-display font-bold text-gold text-[10px]">40</span>
-                </div>
-              </div>
+              <K40Logo size="sm" />
               <span className="font-display text-sm font-semibold text-gold-shimmer">
                 Karnival 40 Tahun PPAAB
               </span>

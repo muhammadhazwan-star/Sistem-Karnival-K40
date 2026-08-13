@@ -20,6 +20,7 @@ import {
 import { usePortal } from '@/lib/store'
 import type { PortalView } from '@/lib/types'
 import { cn } from '@/lib/utils'
+import { K40Logo } from './K40Logo'
 
 const NAV_ITEMS: { id: PortalView; label: string; icon: typeof Home }[] = [
   { id: 'beranda', label: 'Beranda', icon: Home },
@@ -47,12 +48,7 @@ export function Navigation() {
             className="flex items-center gap-3 group"
             aria-label="Beranda"
           >
-            <div className="relative h-10 w-10 shrink-0">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gold via-gold-light to-gold-deep animate-pulse-glow" />
-              <div className="absolute inset-[2px] rounded-full bg-maroon-dark flex items-center justify-center">
-                <span className="font-display font-bold text-gold text-sm leading-none">40</span>
-              </div>
-            </div>
+            <K40Logo size="sm" />
             <div className="hidden sm:block text-left leading-tight">
               <div className="font-display text-sm font-semibold text-gold-shimmer tracking-wide">
                 KARNIVAL 40 TAHUN

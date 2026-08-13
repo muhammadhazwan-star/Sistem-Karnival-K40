@@ -18,6 +18,7 @@ import { useEvent, useStatus, useAnnouncements, useSchedule, useActivities } fro
 import { getCountdown, fmtTime, fmtTimeShort } from '@/lib/format'
 import { Button } from '@/components/ui/button'
 import { useSocket } from '@/hooks/use-socket'
+import { K40Logo } from '../K40Logo'
 
 export function Beranda() {
   const { setView, setUploadOpen } = usePortal()
@@ -119,15 +120,7 @@ export function Beranda() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="mb-6 flex justify-center"
           >
-            <div className="relative h-28 w-28 sm:h-36 sm:w-36 animate-float">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gold via-gold-light to-gold-deep glow-gold" />
-              <div className="absolute inset-[3px] rounded-full bg-gradient-to-br from-maroon to-maroon-dark flex flex-col items-center justify-center">
-                <span className="font-display text-4xl sm:text-5xl font-bold text-gold-shimmer leading-none">40</span>
-                <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-gold/80 mt-1">Tahun</span>
-              </div>
-              {/* Decorative ring */}
-              <div className="absolute -inset-2 rounded-full border border-gold/30 animate-spin-slow" style={{ borderStyle: 'dashed' }} />
-            </div>
+            <K40Logo size="xl" showRing className="animate-float" />
           </motion.div>
 
           {/* Title */}

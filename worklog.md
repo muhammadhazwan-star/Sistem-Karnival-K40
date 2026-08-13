@@ -210,3 +210,23 @@ Stage Summary:
 - Real-time updates via Socket.io for gallery and announcements.
 - Premium Maroon & Gold Islamic Grand Gala glassmorphism theme.
 - Browser-verified: all interactions work end-to-end.
+
+---
+Task ID: 11
+Agent: main
+Task: Integrate official K40 logo (LOGO K40.jpeg) into portal
+
+Work Log:
+- Analyzed uploaded logo via VLM: white background, deep red "40" with central PPAAB seal, "PPAAB" text, colorful swoosh
+- Copied logo to public/images/logo-k40.jpeg
+- Created reusable K40Logo component (src/components/portal/K40Logo.tsx) with sizes (sm/md/lg/xl), optional decorative ring, glow effect
+- Updated Navigation header to use real logo (size sm) replacing the placeholder "40" badge
+- Updated Beranda hero centerpiece to use real logo (size xl) with floating animation + decorative spinning ring
+- Updated Footer brand section to use real logo (size sm)
+- Logo displayed in rounded white container to complement maroon/gold theme
+- Verified via Agent Browser: 3 logo instances load correctly (1080px natural width), no errors
+- Lint passes clean
+
+Stage Summary:
+- Official K40 anniversary logo integrated into navigation, hero, and footer.
+- Reusable K40Logo component available for future use across portal.
