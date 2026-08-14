@@ -281,3 +281,30 @@ Stage Summary:
 - Navigation simplified to 6 tabs: Beranda, Atur Cara, Pengumuman, Galeri, Ucapan, Buku Program
 - Buku Program embeds the Canva link in an iframe
 - Beranda now has "Karnival Live" wall — visitors can post text greetings/feelings AND upload photos that appear in real-time via socket.io
+
+---
+Task ID: 14
+Agent: main
+Task: Migrate database from SQLite to Supabase PostgreSQL
+
+Work Log:
+- Updated prisma/schema.prisma: provider changed from "sqlite" to "postgresql"
+- Updated .env with Supabase connection pooler URL (ap-southeast-2 region, IPv4)
+- Discovered sandbox doesn't support IPv6 — direct Supabase connection (db.*.supabase.co:5432) unreachable
+- Tested all 12 Supabase pooler regions to find correct one: ap-southeast-2 (Sydney)
+- Used session mode pooler: aws-0-ap-southeast-2.pooler.supabase.com:5432
+- Pooler username format: postgres.wyuyhozqvpcdcluoqnbm
+- Fixed stale system DATABASE_URL env var: installed dotenv-cli, added --override flag to all prisma scripts
+- Updated src/lib/db.ts to use dotenv config({override:true}) 
+- Created .env.local for Next.js env loading
+- Successfully pushed all 12 tables to Supabase PostgreSQL via prisma db push
+- Re-seeded all data: 18 schedule items (with VIP speakers), 12 activities, 6 announcements, 12 gallery photos, 8 ucapan, 8 booths, 11 map locations, 5 journey items, 6 live posts
+- Verified via API: all endpoints return 200 with PostgreSQL queries ("public"."TableName" syntax with $1 params)
+- Verified via browser: homepage, live wall, navigation all working with Supabase data
+- Committed and pushed to GitHub (commit 1966a06)
+
+Stage Summary:
+- Database fully migrated to Supabase PostgreSQL (project: wyuyhozqvpcdcluoqnbm)
+- Connection via pooler (IPv4) on aws-0-ap-southeast-2.pooler.supabase.com:5432
+- All Prisma commands use dotenv-cli with --override to fix stale system env var
+- Portal fully functional with cloud database
