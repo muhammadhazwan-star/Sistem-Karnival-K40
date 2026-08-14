@@ -47,12 +47,37 @@ export function AturCara() {
         <p className="mt-1 text-xs text-gold/60">23 Ogos 2026 · Bermula 6.30 ptg</p>
       </div>
 
+      {/* Official Atur Cara Poster */}
+      <div className="mb-10 flex justify-center">
+        <div className="relative max-w-sm w-full">
+          <div className="absolute -inset-3 rounded-3xl bg-gradient-to-br from-gold/20 via-transparent to-gold/10 blur-lg" />
+          <div className="relative rounded-2xl overflow-hidden glass-gold p-2 glow-gold-sm">
+            <img
+              src="/images/aturcara-poster.jpeg"
+              alt="Atur Cara Rasmi Majlis Makan Malam Amal — Karnival 40 Tahun PPAAB"
+              className="w-full rounded-xl object-contain"
+            />
+          </div>
+          <p className="mt-3 text-center text-xs text-cream/50">
+            Atur Cara Rasmi · Majlis Makan Malam Amal
+          </p>
+        </div>
+      </div>
+
       {/* Timeline */}
       {loading ? (
         <div className="space-y-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <Skeleton key={i} className="h-20 rounded-2xl bg-maroon/30" />
           ))}
+        </div>
+      ) : items.length === 0 ? (
+        <div className="text-center py-10 glass rounded-2xl">
+          <CalendarClock className="h-10 w-10 text-gold/30 mx-auto mb-3" />
+          <p className="text-cream/50 text-sm">
+            Butiran atur cara akan dikemas kini oleh urusetia.
+          </p>
+          <p className="text-cream/40 text-xs mt-1">Sila rujuk poster rasmi di atas.</p>
         </div>
       ) : (
         <div className="relative">

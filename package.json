@@ -11,7 +11,8 @@
     "db:generate": "prisma generate",
     "db:migrate": "dotenv -e .env -o -- prisma migrate dev",
     "db:reset": "dotenv -e .env -o -- prisma migrate reset",
-    "seed": "dotenv -e .env -o -- bun prisma/seed.ts"
+    "seed": "dotenv -e .env -o -- bun prisma/seed.ts",
+    "cleanup": "dotenv -e .env -o -- bun prisma/cleanup.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
