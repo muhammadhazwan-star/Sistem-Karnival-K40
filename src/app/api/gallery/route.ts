@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { broadcast } from '@/lib/broadcast'
-import { promises as fs } from 'fs'
-import path from 'path'
+import { uploadImage } from '@/lib/supabase'
 import crypto from 'crypto'
 
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads')
 const MAX_SIZE = 10 * 1024 * 1024 // 10MB
 
 export async function GET() {
@@ -62,19 +60,12 @@ export async function POST(request: Request) {
       )
     }
 
-    // Ensure upload directory exists
-    await fs.mkdir(UPLOAD_DIR, { recursive: true })
-
-    // Build unique filename — preserve original extension when sensible
-    const ext = path.extname(image.name || '').toLowerCase()
-    const safeExt = /^\.(jpe?g|png|webp|gif|avif)$/.test(ext) ? ext : '.jpg'
-    const filename = `${crypto.randomUUID()}${safeExt}`
-    const filePath = path.join(UPLOAD_DIR, filename)
-
+    // Upload to Supabase Storage
+    const ext = image.name.split('.').pop()?.toLowerCase() || 'jpg'
+    const safeExt = /^(jpe?g|png|webp|gif|avif)$/.test(ext) ? ext : 'jpg'
+    const filename = `gallery/${crypto.randomUUID()}.${safeExt}`
     const buffer = Buffer.from(await image.arrayBuffer())
-    await fs.writeFile(filePath, buffer)
-
-    const imageUrl = `/uploads/${filename}`
+    const imageUrl = await uploadImage(buffer, filename, image.type)
 
     const settings = await db.setting.findUnique({ where: { id: 'settings' } })
     const mode = settings?.galleryMode ?? 'auto'

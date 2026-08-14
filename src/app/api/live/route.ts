@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { broadcast } from '@/lib/broadcast'
-import fs from 'fs'
-import path from 'path'
+import { uploadImage } from '@/lib/supabase'
 import crypto from 'crypto'
 
 // GET — return recent live posts (public)
@@ -41,13 +40,11 @@ export async function POST(request: Request) {
         if (image.size > 10 * 1024 * 1024) {
           return NextResponse.json({ error: 'Saiz fail maksimum 10MB' }, { status: 400 })
         }
+        // Upload to Supabase Storage
         const ext = image.name.split('.').pop()?.toLowerCase() || 'jpg'
-        const filename = `${crypto.randomUUID()}.${ext}`
-        const uploadDir = path.join(process.cwd(), 'public', 'uploads')
-        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true })
+        const filename = `live/${crypto.randomUUID()}.${ext}`
         const buffer = Buffer.from(await image.arrayBuffer())
-        fs.writeFileSync(path.join(uploadDir, filename), buffer)
-        imageUrl = `/uploads/${filename}`
+        imageUrl = await uploadImage(buffer, filename, image.type)
       }
     } else {
       const body = await request.json()
