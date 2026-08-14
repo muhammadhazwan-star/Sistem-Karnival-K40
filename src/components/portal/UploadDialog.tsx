@@ -60,7 +60,10 @@ export function UploadDialog() {
       fd.append('contributorName', name.trim())
       fd.append('caption', caption.trim())
       fd.append('image', file)
-      await api.uploadPhoto(fd)
+      const result = await api.uploadPhoto(fd)
+      if (!result || result.error) {
+        throw new Error(result?.error || 'Gagal memuat naik gambar')
+      }
       setDone(true)
       toast.success('Momen anda telah dikongsi! ❤️')
     } catch (e: any) {

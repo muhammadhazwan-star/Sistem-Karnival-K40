@@ -75,20 +75,28 @@ export function LiveWall() {
     }
     setPosting(true)
     try {
+      let result
       if (file) {
         const fd = new FormData()
         fd.append('authorName', name.trim())
         fd.append('content', text.trim())
         fd.append('image', file)
-        await api.createLivePost(fd)
+        result = await api.createLivePost(fd)
       } else {
-        await api.createLiveText({ authorName: name.trim(), content: text.trim() })
+        result = await api.createLiveText({ authorName: name.trim(), content: text.trim() })
+      }
+      // Immediately add the returned post to the feed
+      if (result?.post) {
+        setData((prev) =>
+          prev ? { posts: [result.post, ...prev.posts] } : { posts: [result.post] }
+        )
       }
       toast.success('Momen anda telah dikongsi secara live!')
       setText('')
       setFile(null)
       setPreview(null)
       setShowComposer(false)
+      // Also refetch to ensure consistency
       refetch()
     } catch (e: any) {
       toast.error(e.message || 'Gagal menghantar')

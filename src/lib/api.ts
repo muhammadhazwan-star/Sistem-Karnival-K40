@@ -30,12 +30,20 @@ export const api = {
   live: () => request<{ posts: any[] }>('/live'),
 
   // Public submissions
-  uploadPhoto: (data: FormData) =>
-    fetch(`${BASE}/gallery`, { method: 'POST', body: data }).then((r) => r.json()),
+  uploadPhoto: async (data: FormData) => {
+    const res = await fetch(`${BASE}/gallery`, { method: 'POST', body: data })
+    const json = await res.json()
+    if (!res.ok) throw new Error(json.error || 'Gagal memuat naik gambar')
+    return json
+  },
   submitUcapan: (data: { authorName: string; role: string; content: string }) =>
     request<any>('/ucapan', { method: 'POST', body: JSON.stringify(data) }),
-  createLivePost: (data: FormData) =>
-    fetch(`${BASE}/live`, { method: 'POST', body: data }).then((r) => r.json()),
+  createLivePost: async (data: FormData) => {
+    const res = await fetch(`${BASE}/live`, { method: 'POST', body: data })
+    const json = await res.json()
+    if (!res.ok) throw new Error(json.error || 'Gagal menghantar momen')
+    return json
+  },
   createLiveText: (data: { authorName: string; content: string }) =>
     request<any>('/live', { method: 'POST', body: JSON.stringify(data) }),
 

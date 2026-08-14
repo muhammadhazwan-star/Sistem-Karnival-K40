@@ -57,8 +57,9 @@ server.log
 /db/*.db
 /db/*.db-journal
 
-# User uploads (runtime)
-/public/uploads/
+# User uploads (runtime) — keep directory but ignore contents
+/public/uploads/*
+!/public/uploads/.gitkeep
 
 # Agent context
 /agent-ctx/
