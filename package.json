@@ -7,11 +7,11 @@
     "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
     "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
     "lint": "eslint .",
-    "db:push": "prisma db push --accept-data-loss",
+    "db:push": "dotenv -e .env -o -- prisma db push --accept-data-loss",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:reset": "prisma migrate reset",
-    "seed": "bun prisma/seed.ts"
+    "db:migrate": "dotenv -e .env -o -- prisma migrate dev",
+    "db:reset": "dotenv -e .env -o -- prisma migrate reset",
+    "seed": "dotenv -e .env -o -- bun prisma/seed.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -90,6 +90,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "bun-types": "^1.3.4",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "^16.1.1",
     "tailwindcss": "^4",
