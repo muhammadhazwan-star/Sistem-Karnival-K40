@@ -20,6 +20,9 @@ import { Button } from '@/components/ui/button'
 import { useSocket } from '@/hooks/use-socket'
 import { K40Logo } from '../K40Logo'
 import { LiveWall } from '../LiveWall'
+import { InvitationCard } from '../InvitationCard'
+import { CalendarWidget } from '../CalendarWidget'
+import { VenueCard } from '../VenueCard'
 
 export function Beranda() {
   const { setView, setUploadOpen } = usePortal()
@@ -213,8 +216,28 @@ export function Beranda() {
               <Camera className="h-4 w-4 mr-2" /> Share Your Moment 📸
             </Button>
           </motion.div>
+
+          {/* Calendar widget below countdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.75 }}
+            className="mt-8 flex justify-center"
+          >
+            <div className="w-full max-w-xs">
+              <CalendarWidget />
+            </div>
+          </motion.div>
         </div>
       </section>
+
+      {/* Invitation Card + Venue Card */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
+        <div className="grid gap-6 lg:grid-cols-2 items-start">
+          <InvitationCard />
+          <VenueCard />
+        </div>
+      </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12 space-y-8 sm:space-y-12">
         {/* What's Happening Now */}
