@@ -1,41 +1,63 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Music, Play, Pause, Volume2, VolumeX, X } from 'lucide-react'
+import { Music, Play, Pause, Volume2, VolumeX, X, Heart } from 'lucide-react'
 
 const AUDIO_SRC = '/audio/hijjaz-terima-kasih.mp3'
 const TRACK_NAME = 'Hijjaz — Terima Kasih Segalanya'
 
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null)
+  const playedRef = useRef(false) // track if music has ever started
   const [playing, setPlaying] = useState(false)
   const [muted, setMuted] = useState(false)
   const [volume, setVolume] = useState(0.6)
   const [showControls, setShowControls] = useState(false)
-  const [showPrompt, setShowPrompt] = useState(false)
-  const [dismissed, setDismissed] = useState(false)
+  const [showWelcome, setShowWelcome] = useState(false)
 
-  // Attempt autoplay on mount
+  const startMusic = useCallback(async () => {
+    if (playedRef.current) return
+    const audio = audioRef.current
+    if (!audio) return
+    try {
+      audio.volume = volume
+      await audio.play()
+      playedRef.current = true
+      setPlaying(true)
+      setShowWelcome(false)
+    } catch {
+      // Still blocked — ignore
+    }
+  }, [volume])
+
+  // Attempt autoplay + set up first-interaction listeners
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
     audio.volume = volume
 
-    // Try to autoplay (works in some browsers)
+    // Strategy 1: Try autoplay on load
     const tryAutoplay = async () => {
       try {
         await audio.play()
+        playedRef.current = true
         setPlaying(true)
       } catch {
-        // Autoplay blocked by browser — show prompt to user
-        setShowPrompt(true)
+        // Autoplay blocked — show welcome prompt + set up interaction listeners
+        setShowWelcome(true)
+        // Strategy 2: Listen for FIRST user interaction anywhere on the page
+        const events = ['click', 'touchstart', 'keydown', 'pointerdown']
+        const onFirstInteraction = () => {
+          startMusic()
+          events.forEach((ev) => document.removeEventListener(ev, onFirstInteraction, true))
+        }
+        events.forEach((ev) => document.addEventListener(ev, onFirstInteraction, { capture: true, once: true }))
       }
     }
-    // Small delay to ensure audio is loaded
-    const timer = setTimeout(tryAutoplay, 500)
+    const timer = setTimeout(tryAutoplay, 300)
     return () => clearTimeout(timer)
-  }, [])
+  }, [startMusic, volume])
 
   const togglePlay = async () => {
     const audio = audioRef.current
@@ -46,8 +68,9 @@ export function MusicPlayer() {
         setPlaying(false)
       } else {
         await audio.play()
+        playedRef.current = true
         setPlaying(true)
-        setShowPrompt(false)
+        setShowWelcome(false)
       }
     } catch {
       // ignore
@@ -68,48 +91,88 @@ export function MusicPlayer() {
     setVolume(v)
   }
 
-  const dismissPrompt = () => {
-    setShowPrompt(false)
-    setDismissed(true)
+  const dismissWelcome = () => {
+    setShowWelcome(false)
   }
 
   return (
     <>
       {/* Hidden audio element */}
-      <audio ref={audioRef} src={AUDIO_SRC} loop preload="auto" />
+      <audio ref={audioRef} src={AUDIO_SRC} loop preload="auto" autoPlay />
 
-      {/* Autoplay prompt — shown if browser blocks autoplay */}
+      {/* Full-screen welcome prompt — click anywhere starts music */}
       <AnimatePresence>
-        {showPrompt && !dismissed && (
+        {showWelcome && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] glass-strong rounded-2xl border border-gold/40 p-4 shadow-2xl max-w-sm w-[calc(100%-2rem)]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-maroon-dark/80 backdrop-blur-md cursor-pointer"
+            onClick={startMusic}
           >
-            <button
-              onClick={dismissPrompt}
-              className="absolute top-2 right-2 text-cream/40 hover:text-cream"
-              aria-label="Tutup"
+            <motion.div
+              initial={{ scale: 0.85, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.85, y: 20 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="glass-strong rounded-3xl border-2 border-gold/50 p-8 sm:p-10 text-center max-w-md mx-4 relative"
+              onClick={(e) => { e.stopPropagation(); startMusic() }}
             >
-              <X className="h-4 w-4" />
-            </button>
-            <div className="flex items-center gap-3">
-              <div className="shrink-0 rounded-full glass-gold p-2.5 animate-pulse-glow">
-                <Music className="h-5 w-5 text-gold" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gold-light">Muzik Karnival</p>
-                <p className="text-[11px] text-cream/60">Mainkan lagu tema Karnival 40 Tahun</p>
-              </div>
               <button
-                onClick={togglePlay}
-                className="shrink-0 rounded-full bg-gradient-to-r from-gold to-gold-light text-maroon-dark p-2.5 hover:opacity-90 transition"
-                aria-label="Main muzik"
+                onClick={(e) => { e.stopPropagation(); dismissWelcome() }}
+                className="absolute top-3 right-3 text-cream/40 hover:text-cream"
+                aria-label="Tutup"
               >
-                <Play className="h-4 w-4 fill-maroon-dark" />
+                <X className="h-4 w-4" />
               </button>
-            </div>
+
+              {/* Animated music icon */}
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="inline-flex items-center justify-center mb-5"
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-gold/30 blur-xl animate-pulse-glow" />
+                  <div className="relative rounded-full glass-gold p-4">
+                    <Music className="h-8 w-8 text-gold" />
+                  </div>
+                </div>
+              </motion.div>
+
+              <h3 className="font-display text-2xl font-bold text-gold-shimmer mb-2">
+                Selamat Datang ke Karnival 40 Tahun
+              </h3>
+              <p className="font-serif text-sm italic text-cream/70 mb-5">
+                Nikmati lagu tema sambutan kami
+              </p>
+
+              <div className="text-xs text-cream/50 mb-4">
+                🎵 {TRACK_NAME}
+              </div>
+
+              {/* Big play button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => { e.stopPropagation(); startMusic() }}
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gold to-gold-light text-maroon-dark px-8 py-3 font-semibold hover:opacity-90 shadow-lg"
+              >
+                <Play className="h-5 w-5 fill-maroon-dark" />
+                Mainkan Muzik
+              </motion.button>
+
+              <p className="text-[10px] text-cream/40 mt-4">
+                Klik mana-mana untuk mula
+              </p>
+
+              {/* Decorative heart */}
+              <div className="mt-5 flex items-center justify-center gap-2 text-gold/40">
+                <div className="h-px w-12 bg-gradient-to-r from-transparent to-gold/30" />
+                <Heart className="h-3 w-3 fill-gold/30" />
+                <div className="h-px w-12 bg-gradient-to-l from-transparent to-gold/30" />
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -163,11 +226,7 @@ export function MusicPlayer() {
                 <motion.div
                   key={i}
                   animate={{ height: [4, 12, 6, 10, 4] }}
-                  transition={{
-                    duration: 0.8,
-                    repeat: Infinity,
-                    delay: i * 0.15,
-                  }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
                   className="w-0.5 bg-gold rounded-full"
                 />
               ))}
@@ -177,8 +236,7 @@ export function MusicPlayer() {
           )}
         </motion.button>
 
-        {/* Hidden play/pause toggle on double context — click main button to toggle controls,
-            but also provide quick toggle */}
+        {/* Quick play/pause toggle when controls open */}
         {showControls && (
           <button
             onClick={togglePlay}
