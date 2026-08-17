@@ -9,10 +9,10 @@ export function Footer() {
 
   return (
     <footer className="mt-auto border-t border-gold/20 glass-strong">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-        <div className="grid gap-6 sm:grid-cols-3">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8 sm:px-6">
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-3">
           {/* Brand + official logos */}
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             <div className="flex items-center gap-2">
               <K40Logo size="sm" />
               <span className="font-display text-sm font-semibold text-gold-shimmer">
@@ -24,20 +24,20 @@ export function Footer() {
               Pusat Pendidikan Al-Amin Berhad.
             </p>
             {/* Official institutional logos */}
-            <div className="flex items-center gap-3 pt-1">
+            <div className="flex items-center gap-2 sm:gap-3 pt-1">
               <img
                 src="/images/logo-sekolah.jpeg"
                 alt="Logo Sekolah Rendah Islam Al-Amin"
                 title="Sekolah Rendah Islam Al-Amin"
-                className="h-9 w-9 rounded-full bg-white object-contain p-0.5"
+                className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-white object-contain p-0.5"
               />
               <img
                 src="/images/logo-edu-oasis.png"
                 alt="Logo Edu Oasis Al-Amin Sdn Bhd"
                 title="Edu Oasis Al-Amin Sdn Bhd"
-                className="h-9 w-9 object-contain"
+                className="h-8 w-8 sm:h-9 sm:w-9 object-contain"
               />
-              <div className="h-8 w-px bg-gold/20" />
+              <div className="h-7 w-px bg-gold/20" />
               <K40Logo size="sm" />
             </div>
           </div>

@@ -35,7 +35,7 @@ export function InvitationCard() {
           </div>
 
           {/* Card content */}
-          <div className="px-6 sm:px-10 py-6 sm:py-8 text-center">
+          <div className="px-5 sm:px-10 py-5 sm:py-8 text-center">
             {/* Envelope icon */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}

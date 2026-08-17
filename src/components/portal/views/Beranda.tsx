@@ -91,7 +91,7 @@ export function Beranda() {
         {/* Gold ribbon sweep */}
         <div className="absolute top-1/3 left-0 right-0 h-32 ribbon-sweep opacity-60" />
 
-        <div className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:py-32 text-center">
+        <div className="relative mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-20 lg:py-28 text-center">
           {/* Top badges */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -132,10 +132,10 @@ export function Beranda() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight"
+            className="font-display text-2xl sm:text-5xl lg:text-6xl font-bold leading-tight"
           >
             <span className="text-gold-shimmer block">Karnival 40 Tahun</span>
-            <span className="text-cream block text-2xl sm:text-3xl lg:text-4xl mt-1">
+            <span className="text-cream block text-xl sm:text-3xl lg:text-4xl mt-1">
               Pusat Pendidikan Al-Amin Berhad
             </span>
           </motion.h1>
@@ -145,7 +145,7 @@ export function Beranda() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="mt-5 font-serif text-lg sm:text-2xl italic text-gold-light/90 max-w-2xl mx-auto"
+            className="mt-4 font-serif text-base sm:text-2xl italic text-gold-light/90 max-w-2xl mx-auto px-2"
           >
             “40 Tahun Membina Generasi, Menginspirasi Masa Depan.”
           </motion.p>
@@ -174,21 +174,21 @@ export function Beranda() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.55 }}
-              className="mt-8"
+              className="mt-6 sm:mt-8"
             >
-              <div className="text-xs uppercase tracking-[0.3em] text-gold/70 mb-3">Karnival Bermula Dalam</div>
-              <div className="flex items-center justify-center gap-2 sm:gap-4">
+              <div className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-gold/70 mb-3">Karnival Bermula Dalam</div>
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-4 max-w-sm mx-auto">
                 {[
                   { label: 'Hari', value: countdown.days },
                   { label: 'Jam', value: countdown.hours },
                   { label: 'Minit', value: countdown.minutes },
                   { label: 'Saat', value: countdown.seconds },
                 ].map((u) => (
-                  <div key={u.label} className="glass-gold rounded-2xl px-3 py-3 sm:px-5 sm:py-4 min-w-[64px] sm:min-w-[80px]">
-                    <div className="font-display text-2xl sm:text-4xl font-bold text-gold-shimmer tabular-nums">
+                  <div key={u.label} className="glass-gold rounded-xl sm:rounded-2xl px-1 py-2 sm:px-5 sm:py-4 text-center">
+                    <div className="font-display text-lg sm:text-4xl font-bold text-gold-shimmer tabular-nums leading-none">
                       {u.value.toString().padStart(2, '0')}
                     </div>
-                    <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-cream/60 mt-1">{u.label}</div>
+                    <div className="text-[8px] sm:text-[10px] uppercase tracking-wider text-cream/60 mt-1">{u.label}</div>
                   </div>
                 ))}
               </div>
@@ -222,9 +222,9 @@ export function Beranda() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.75 }}
-            className="mt-8 flex justify-center"
+            className="mt-6 sm:mt-8 flex justify-center"
           >
-            <div className="w-full max-w-xs">
+            <div className="w-full max-w-[300px] sm:max-w-xs">
               <CalendarWidget />
             </div>
           </motion.div>
@@ -232,14 +232,14 @@ export function Beranda() {
       </section>
 
       {/* Invitation Card + Venue Card */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
-        <div className="grid gap-6 lg:grid-cols-2 items-start">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-8">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 items-start">
           <InvitationCard />
           <VenueCard />
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12 space-y-8 sm:space-y-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-10">
         {/* What's Happening Now */}
         <section>
           <SectionHeader
@@ -351,7 +351,7 @@ export function Beranda() {
             title="Digital Experience with Al-Amin"
             subtitle="Pengalaman digital sepanjang Karnival 40 Tahun"
           />
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mt-5 sm:mt-6">
             {[
               { label: 'DISCOVER', desc: 'Terokai atur cara & aktiviti karnival', icon: Compass, color: 'from-amber-500/20 to-amber-700/10' },
               { label: 'PARTICIPATE', desc: 'Sertai pengalaman digital Al-Amin', icon: Radio, color: 'from-rose-500/20 to-rose-700/10' },
@@ -367,11 +367,11 @@ export function Beranda() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
                   onClick={() => setView(p.label === 'SHARE' ? 'galeri' : p.label === 'DISCOVER' ? 'atur-cara' : p.label === 'PARTICIPATE' ? 'galeri' : 'ucapan')}
-                  className={`glass rounded-2xl p-4 sm:p-5 text-left bg-gradient-to-br ${p.color} hover:scale-[1.03] transition-transform`}
+                  className={`glass rounded-xl sm:rounded-2xl p-3 sm:p-5 text-left bg-gradient-to-br ${p.color} hover:scale-[1.03] transition-transform`}
                 >
-                  <Icon className="h-6 w-6 text-gold mb-3" />
-                  <div className="font-display text-sm sm:text-base font-bold text-gold-shimmer tracking-wide">{p.label}</div>
-                  <div className="text-[11px] sm:text-xs text-cream/60 mt-1">{p.desc}</div>
+                  <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-gold mb-2 sm:mb-3" />
+                  <div className="font-display text-xs sm:text-base font-bold text-gold-shimmer tracking-wide">{p.label}</div>
+                  <div className="text-[10px] sm:text-xs text-cream/60 mt-1">{p.desc}</div>
                 </motion.button>
               )
             })}
@@ -379,7 +379,7 @@ export function Beranda() {
         </section>
 
         {/* Quick access cards */}
-        <section className="grid sm:grid-cols-3 gap-4">
+        <section className="grid sm:grid-cols-3 gap-3 sm:gap-4">
           <QuickCard
             title="Atur Cara Karnival"
             desc="Timeline majlis makan malam amal"
@@ -412,14 +412,14 @@ function SectionHeader({ icon: Icon, title, subtitle, action, actionLabel }: {
   actionLabel?: string
 }) {
   return (
-    <div className="flex items-end justify-between gap-4">
-      <div className="flex items-center gap-3">
-        <div className="rounded-xl glass-gold p-2.5">
-          <Icon className="h-5 w-5 text-gold" />
+    <div className="flex items-end justify-between gap-2 sm:gap-4">
+      <div className="flex items-center gap-2 sm:gap-3">
+        <div className="rounded-lg sm:rounded-xl glass-gold p-2 sm:p-2.5 shrink-0">
+          <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-gold" />
         </div>
         <div>
-          <h2 className="font-display text-xl sm:text-2xl font-bold text-gold-shimmer">{title}</h2>
-          {subtitle && <p className="text-xs text-cream/60 mt-0.5">{subtitle}</p>}
+          <h2 className="font-display text-lg sm:text-2xl font-bold text-gold-shimmer leading-tight">{title}</h2>
+          {subtitle && <p className="text-[11px] sm:text-xs text-cream/60 mt-0.5">{subtitle}</p>}
         </div>
       </div>
       {action && actionLabel && (
@@ -443,14 +443,14 @@ function QuickCard({ title, desc, icon: Icon, onClick }: {
   return (
     <button
       onClick={onClick}
-      className="glass rounded-2xl p-5 text-left hover:bg-gold/10 transition group"
+      className="glass rounded-xl sm:rounded-2xl p-3 sm:p-5 text-left hover:bg-gold/10 transition group"
     >
       <div className="flex items-center justify-between">
-        <Icon className="h-6 w-6 text-gold" />
+        <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-gold" />
         <ArrowRight className="h-4 w-4 text-gold/40 group-hover:text-gold group-hover:translate-x-1 transition" />
       </div>
-      <h3 className="mt-3 font-display text-base font-semibold text-cream">{title}</h3>
-      <p className="text-xs text-cream/60 mt-1">{desc}</p>
+      <h3 className="mt-2 sm:mt-3 font-display text-sm sm:text-base font-semibold text-cream">{title}</h3>
+      <p className="text-[11px] sm:text-xs text-cream/60 mt-1">{desc}</p>
     </button>
   )
 }
