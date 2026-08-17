@@ -7,6 +7,7 @@ import { Navigation } from './Navigation'
 import { Footer } from './Footer'
 import { ShareDialog } from './ShareDialog'
 import { UploadDialog } from './UploadDialog'
+import { MusicPlayer } from './MusicPlayer'
 import { Beranda } from './views/Beranda'
 import { AturCara } from './views/AturCara'
 import { Pengumuman } from './views/Pengumuman'
@@ -51,6 +52,7 @@ export function PortalApp() {
       </div>
       <ShareDialog />
       <UploadDialog />
+      <MusicPlayer />
     </div>
   )
 }
