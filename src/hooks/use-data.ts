@@ -1,13 +1,14 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { api } from '@/lib/api'
 
-// Simple data fetch hook with refetch capability
+// Simple data fetch hook with refetch + retry capability
 export function useFetch<T>(fetcher: () => Promise<T>, deps: any[] = []) {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const retryCount = useRef(0)
 
   const refetch = useCallback(async () => {
     setLoading(true)
@@ -15,14 +16,25 @@ export function useFetch<T>(fetcher: () => Promise<T>, deps: any[] = []) {
     try {
       const d = await fetcher()
       setData(d)
+      retryCount.current = 0
     } catch (e: any) {
-      setError(e.message || 'Gagal memuatkan data')
+      const msg = e?.message || 'Gagal memuatkan data'
+      console.error('[useFetch] Error:', msg)
+      // Auto-retry for network errors (Failed to fetch)
+      if (msg.includes('Failed to fetch') && retryCount.current < 3) {
+        retryCount.current++
+        console.log(`[useFetch] Auto-retry ${retryCount.current}/3 in ${retryCount.current * 1000}ms...`)
+        setTimeout(() => refetch(), retryCount.current * 1000)
+        return
+      }
+      setError(msg)
     } finally {
       setLoading(false)
     }
   }, deps)
 
   useEffect(() => {
+    retryCount.current = 0
     refetch()
   }, [refetch])
 

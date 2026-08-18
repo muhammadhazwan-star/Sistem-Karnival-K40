@@ -11,11 +11,13 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 
 export function TempatDuduk() {
-  const { data: seatingData, loading } = useSeating()
+  const { data: seatingData, loading, error, refetch } = useSeating()
   const [selected, setSelected] = useState<any | null>(null)
   const [search, setSearch] = useState('')
 
   const tables = seatingData?.tables ?? []
+
+  console.log('[TempatDuduk] loading:', loading, 'error:', error, 'tables:', tables.length)
 
   // Search: find tables containing the searched name
   const searchResults = useMemo(() => {
@@ -98,7 +100,26 @@ export function TempatDuduk() {
 
       {/* Floor plan */}
       {loading ? (
-        <Skeleton className="h-[500px] rounded-3xl bg-maroon/30" />
+        <div className="glass rounded-3xl p-8 text-center h-[400px] flex flex-col items-center justify-center">
+          <div className="relative h-12 w-12 mb-4">
+            <div className="absolute inset-0 rounded-full border-2 border-gold/20" />
+            <div className="absolute inset-0 rounded-full border-2 border-gold border-t-transparent animate-spin" />
+          </div>
+          <p className="text-cream/60 text-sm">Memuatkan pelan tempat duduk...</p>
+          <p className="text-cream/40 text-xs mt-1">30 meja · 300 tetamu</p>
+        </div>
+      ) : error ? (
+        <div className="glass rounded-2xl p-8 text-center">
+          <p className="text-cream/60 text-sm mb-3">Gagal memuatkan data tempat duduk</p>
+          <p className="text-cream/40 text-xs mb-4">{error}</p>
+          <button onClick={() => refetch()} className="rounded-full bg-gold/20 px-4 py-2 text-xs text-gold hover:bg-gold/30">
+            Cuba semula
+          </button>
+        </div>
+      ) : tables.length === 0 ? (
+        <div className="glass rounded-2xl p-8 text-center">
+          <p className="text-cream/60 text-sm">Tiada meja ditemui. Sila tambah data meja.</p>
+        </div>
       ) : (
         <div className="relative glass-strong rounded-3xl overflow-hidden border-2 border-gold/30 p-1">
           {/* Title bar */}
