@@ -7,23 +7,28 @@ config({ override: true })
 
 // Global singleton — prevents creating multiple PrismaClient instances
 // across hot-reloads (dev) and serverless function invocations (Vercel).
-// Using globalThis ensures the same instance is reused.
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
+}
+
+// Safety check: if the cached PrismaClient is stale (missing models that
+// exist in the current schema), discard it and create a fresh one.
+// This fixes "Cannot read properties of undefined (reading 'findMany')"
+// when the schema is updated but globalThis still holds an old client.
+const cached = globalForPrisma.prisma
+const isStale = cached && typeof (cached as any).seatingTable === 'undefined'
+
+if (isStale) {
+  // Old client cached — discard it
+  try { (cached as any)?.$disconnect?.() } catch {}
+  globalForPrisma.prisma = undefined
 }
 
 export const db =
   globalForPrisma.prisma ??
   new PrismaClient({
     log: ['error', 'warn'],
-    // Limit connection pool — important for Supabase pooler (max 15 in session mode)
-    datasources: {
-      db: {
-        // Prisma reads the URL from env; connection_limit is also set in the URL
-      },
-    },
   })
 
 // Always cache on globalThis (both dev and production/Vercel)
-// This prevents exhausting Supabase connection pool across invocations
 globalForPrisma.prisma = db
