@@ -104,6 +104,9 @@ export function Footer() {
               <button onClick={() => setView('ucapan')} className="text-cream/70 hover:text-gold transition">
                 Ucapan
               </button>
+              <button onClick={() => setView('tempat-duduk')} className="text-cream/70 hover:text-gold transition">
+                Tempat Duduk
+              </button>
               <button onClick={() => setView('buku-program')} className="text-cream/70 hover:text-gold transition">
                 Buku Program
               </button>

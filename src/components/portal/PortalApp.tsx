@@ -14,6 +14,7 @@ import { Pengumuman } from './views/Pengumuman'
 import { Galeri } from './views/Galeri'
 import { Ucapan } from './views/Ucapan'
 import { BukuProgram } from './views/BukuProgram'
+import { TempatDuduk } from './views/TempatDuduk'
 import { Admin } from './views/Admin'
 
 const VIEWS = {
@@ -23,6 +24,7 @@ const VIEWS = {
   galeri: Galeri,
   ucapan: Ucapan,
   'buku-program': BukuProgram,
+  'tempat-duduk': TempatDuduk,
   admin: Admin,
 } as const
 

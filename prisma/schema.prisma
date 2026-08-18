@@ -153,3 +153,17 @@ model LivePost {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model SeatingTable {
+  id          String   @id @default(cuid())
+  tableNumber Int
+  label       String?
+  capacity    Int      @default(10)
+  x           Float    // position percentage 0-100
+  y           Float    // position percentage 0-100
+  zone        String   @default("main") // main | vip | special
+  order       Int      @default(0)
+  guests      String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

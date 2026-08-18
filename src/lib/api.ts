@@ -28,6 +28,7 @@ export const api = {
   settings: () => request<any>('/settings'),
   status: () => request<{ status: string; event: any }>('/status'),
   live: () => request<{ posts: any[] }>('/live'),
+  seating: () => request<{ tables: any[] }>('/seating'),
 
   // Public submissions
   uploadPhoto: async (data: FormData) => {

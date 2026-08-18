@@ -9,6 +9,7 @@ import {
   Images,
   MessageSquareHeart,
   BookOpen,
+  Armchair,
   Shield,
   Menu,
   X,
@@ -25,6 +26,7 @@ const NAV_ITEMS: { id: PortalView; label: string; icon: typeof Home }[] = [
   { id: 'pengumuman', label: 'Pengumuman', icon: Megaphone },
   { id: 'galeri', label: 'Galeri', icon: Images },
   { id: 'ucapan', label: 'Ucapan', icon: MessageSquareHeart },
+  { id: 'tempat-duduk', label: 'Tempat Duduk', icon: Armchair },
   { id: 'buku-program', label: 'Buku Program', icon: BookOpen },
 ]
 

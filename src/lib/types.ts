@@ -115,6 +115,7 @@ export type PortalView =
   | 'galeri'
   | 'ucapan'
   | 'buku-program'
+  | 'tempat-duduk'
   | 'admin'
 
 export const HIGHLIGHT_CATEGORIES = [
