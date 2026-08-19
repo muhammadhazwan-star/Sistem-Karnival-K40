@@ -345,40 +345,6 @@ export function Beranda() {
           </section>
         )}
 
-        {/* Digital Experience with Al-Amin */}
-        <section>
-          <SectionHeader
-            icon={Sparkles}
-            title="Digital Experience with Al-Amin"
-            subtitle="Pengalaman digital sepanjang Karnival 40 Tahun"
-          />
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mt-5 sm:mt-6">
-            {[
-              { label: 'DISCOVER', desc: 'Terokai atur cara & aktiviti karnival', icon: Compass, color: 'from-amber-500/20 to-amber-700/10' },
-              { label: 'PARTICIPATE', desc: 'Sertai pengalaman digital Al-Amin', icon: Radio, color: 'from-rose-500/20 to-rose-700/10' },
-              { label: 'SHARE', desc: 'Kongsi momen ke Live Gallery', icon: Camera, color: 'from-emerald-500/20 to-emerald-700/10' },
-              { label: 'REMEMBER', desc: 'Kenang 40 Tahun Al-Amin selamanya', icon: Sparkles, color: 'from-purple-500/20 to-purple-700/10' },
-            ].map((p, i) => {
-              const Icon = p.icon
-              return (
-                <motion.button
-                  key={p.label}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  onClick={() => setView(p.label === 'SHARE' ? 'galeri' : p.label === 'DISCOVER' ? 'atur-cara' : p.label === 'PARTICIPATE' ? 'galeri' : 'ucapan')}
-                  className={`glass rounded-xl sm:rounded-2xl p-3 sm:p-5 text-left bg-gradient-to-br ${p.color} hover:scale-[1.03] transition-transform`}
-                >
-                  <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-gold mb-2 sm:mb-3" />
-                  <div className="font-display text-xs sm:text-base font-bold text-gold-shimmer tracking-wide">{p.label}</div>
-                  <div className="text-[10px] sm:text-xs text-cream/60 mt-1">{p.desc}</div>
-                </motion.button>
-              )
-            })}
-          </div>
-        </section>
-
         {/* Quick access cards */}
         <section className="grid sm:grid-cols-3 gap-3 sm:gap-4">
           <QuickCard
