@@ -152,10 +152,6 @@ export function InvitationCard() {
               transition={{ delay: 0.9 }}
               className="mt-5 space-y-3"
             >
-              <div className="flex items-center justify-center gap-2 text-sm text-cream/75">
-                <MapPin className="h-4 w-4 text-gold shrink-0" />
-                <span>Dewan Majestic Elissa Garden, Terminal Bersepadu Gombak, Selangor</span>
-              </div>
               <a href={VENUE_LINK} target="_blank" rel="noopener noreferrer" className="block">
                 <Button className="w-full bg-gradient-to-r from-gold to-gold-light text-maroon-dark hover:opacity-90 font-semibold">
                   <MapPin className="h-4 w-4 mr-2" /> Lihat Lokasi Venue
