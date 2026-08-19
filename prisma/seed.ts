@@ -30,7 +30,7 @@ async function main() {
     data: {
       id: 'event',
       name: 'Karnival 40 Tahun Pusat Pendidikan Al-Amin Berhad',
-      tagline: '40 Tahun Membina Generasi, Menginspirasi Masa Depan',
+      tagline: 'Membina Generasi Rabbani',
       date: EVENT_DATE,
       endDate: EVENT_END,
       location: 'Dewan Majestic Elissa Garden, Terminal Bersepadu Gombak, Selangor',

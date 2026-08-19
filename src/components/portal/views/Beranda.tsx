@@ -145,9 +145,9 @@ export function Beranda() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="mt-4 font-serif text-base sm:text-2xl italic text-gold-light/90 max-w-2xl mx-auto px-2"
+            className="mt-4 font-serif text-lg sm:text-2xl italic text-gold-light/90 max-w-2xl mx-auto px-2 whitespace-nowrap"
           >
-            “40 Tahun Membina Generasi, Menginspirasi Masa Depan.”
+            “Membina Generasi Rabbani”
           </motion.p>
 
           {/* Event info */}

@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Pusat Pendidikan Al-Amin Berhad" }],
   openGraph: {
     title: "Portal Digital Karnival 40 Tahun PPAAB",
-    description: "40 Tahun Membina Generasi, Menginspirasi Masa Depan — 23 Ogos 2026",
+    description: "Membina Generasi Rabbani — Karnival 40 Tahun PPAAB, 23 Ogos 2026",
     type: "website",
   },
 };
