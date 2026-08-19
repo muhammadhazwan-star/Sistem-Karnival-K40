@@ -11,7 +11,7 @@ export function ShareDialog() {
   const { shareOpen, setShareOpen } = usePortal()
   const [copied, setCopied] = useState(false)
   const url = typeof window !== 'undefined' ? window.location.href : 'https://karnival40.alaamin.edu.my'
-  const text = 'Karnival 40 Tahun PPAAB — One QR. One Carnival Experience. 23 Ogos 2026!'
+  const text = 'Karnival 40 Tahun PPAAB — 23 Ogos 2026!'
 
   const copyLink = async () => {
     try {

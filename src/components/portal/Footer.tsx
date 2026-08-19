@@ -20,7 +20,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-xs text-cream/60 leading-relaxed">
-              One QR. One Carnival Experience. Portal digital rasmi sempena ulang tahun ke-40
+              Portal digital rasmi sempena ulang tahun ke-40
               Pusat Pendidikan Al-Amin Berhad.
             </p>
             {/* Official institutional logos */}
@@ -35,7 +35,7 @@ export function Footer() {
                 src="/images/logo-edu-oasis.png"
                 alt="Logo Edu Oasis Al-Amin Sdn Bhd"
                 title="Edu Oasis Al-Amin Sdn Bhd"
-                className="h-8 w-8 sm:h-9 sm:w-9 object-contain"
+                className="h-8 w-8 sm:h-9 sm:w-9 object-contain rounded-full bg-white p-1"
               />
               <div className="h-7 w-px bg-gold/20" />
               <K40Logo size="sm" />
