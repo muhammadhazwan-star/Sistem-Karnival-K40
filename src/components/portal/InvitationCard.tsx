@@ -90,8 +90,9 @@ export function InvitationCard() {
               transition={{ delay: 0.5 }}
               className="my-4"
             >
-              <div className="font-display text-lg sm:text-xl font-semibold text-cream tracking-wide">
-                Dato&apos;/Datin/Tuan/Puan/Encik/Cik
+              <div className="font-display text-base sm:text-lg font-semibold text-cream tracking-wide leading-relaxed">
+                Tan Sri/Puan Sri/Dato&apos;/Datin/<br />
+                Tuan/Puan/Encik/Cik
               </div>
             </motion.div>
 
@@ -112,7 +113,7 @@ export function InvitationCard() {
               transition={{ delay: 0.7 }}
               className="font-display text-2xl sm:text-3xl font-bold text-gold-gradient mt-3 mb-4"
             >
-              Majlis Makan Malam Amal kami,
+              Majlis Makan Malam Amal Karnival 40 Tahun kami,
             </motion.h4>
 
             {/* Time badge */}

@@ -134,9 +134,9 @@ export function Beranda() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="font-display text-2xl sm:text-5xl lg:text-6xl font-bold leading-tight"
           >
-            <span className="text-gold-shimmer block">Karnival 40 Tahun</span>
+            <span className="text-gold-shimmer block">Majlis Makan Malam Amal</span>
             <span className="text-cream block text-xl sm:text-3xl lg:text-4xl mt-1">
-              Pusat Pendidikan Al-Amin Berhad
+              Karnival 40 Tahun
             </span>
           </motion.h1>
 
@@ -176,7 +176,7 @@ export function Beranda() {
               transition={{ duration: 0.7, delay: 0.55 }}
               className="mt-6 sm:mt-8"
             >
-              <div className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-gold/70 mb-3">Karnival Bermula Dalam</div>
+              <div className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-gold/70 mb-3">Majlis Bermula Dalam</div>
               <div className="grid grid-cols-4 gap-1.5 sm:gap-4 max-w-sm mx-auto">
                 {[
                   { label: 'Hari', value: countdown.days },
