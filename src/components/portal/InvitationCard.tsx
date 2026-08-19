@@ -144,21 +144,6 @@ export function InvitationCard() {
               <div className="text-xs text-cream/60 mt-0.5">Ahad</div>
             </motion.div>
 
-            {/* Venue with interactive button */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.9 }}
-              className="mt-5 space-y-3"
-            >
-              <a href={VENUE_LINK} target="_blank" rel="noopener noreferrer" className="block">
-                <Button className="w-full bg-gradient-to-r from-gold to-gold-light text-maroon-dark hover:opacity-90 font-semibold">
-                  <MapPin className="h-4 w-4 mr-2" /> Lihat Lokasi Venue
-                </Button>
-              </a>
-            </motion.div>
-
             {/* Closing */}
             <motion.div
               initial={{ opacity: 0 }}

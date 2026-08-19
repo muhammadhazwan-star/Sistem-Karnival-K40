@@ -23,6 +23,7 @@ import { LiveWall } from '../LiveWall'
 import { InvitationCard } from '../InvitationCard'
 import { CalendarWidget } from '../CalendarWidget'
 import { VenueCard } from '../VenueCard'
+import { SeatingPreview } from '../SeatingPreview'
 
 export function Beranda() {
   const { setView, setUploadOpen } = usePortal()
@@ -231,6 +232,11 @@ export function Beranda() {
         <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 items-start">
           <InvitationCard />
           <VenueCard />
+        </div>
+
+        {/* Seating layout preview — below venue card */}
+        <div className="mt-6 max-w-md mx-auto">
+          <SeatingPreview />
         </div>
       </div>
 
