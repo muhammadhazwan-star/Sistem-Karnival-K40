@@ -24,6 +24,7 @@ import { InvitationCard } from '../InvitationCard'
 import { CalendarWidget } from '../CalendarWidget'
 import { VenueCard } from '../VenueCard'
 import { SeatingPreview } from '../SeatingPreview'
+import { LensaAlAmin } from '../LensaAlAmin'
 
 export function Beranda() {
   const { setView, setUploadOpen } = usePortal()
@@ -237,6 +238,11 @@ export function Beranda() {
         {/* Seating layout preview — below venue card */}
         <div className="mt-6 max-w-md mx-auto">
           <SeatingPreview />
+        </div>
+
+        {/* Lensa Al-Amin video */}
+        <div className="mt-8 max-w-3xl mx-auto">
+          <LensaAlAmin />
         </div>
       </div>
 
