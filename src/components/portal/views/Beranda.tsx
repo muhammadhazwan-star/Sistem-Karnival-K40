@@ -25,6 +25,7 @@ import { CalendarWidget } from '../CalendarWidget'
 import { VenueCard } from '../VenueCard'
 import { SeatingPreview } from '../SeatingPreview'
 import { LensaAlAmin } from '../LensaAlAmin'
+import { ParkingRates } from '../ParkingRates'
 
 export function Beranda() {
   const { setView, setUploadOpen } = usePortal()
@@ -238,6 +239,11 @@ export function Beranda() {
         {/* Seating layout preview — below venue card */}
         <div className="mt-6 max-w-md mx-auto">
           <SeatingPreview />
+        </div>
+
+        {/* Parking rates — below location */}
+        <div className="mt-6 max-w-md mx-auto">
+          <ParkingRates />
         </div>
 
         {/* Lensa Al-Amin video */}
