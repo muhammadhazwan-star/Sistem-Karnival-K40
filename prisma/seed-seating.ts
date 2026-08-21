@@ -107,7 +107,7 @@ async function main() {
   let nameIdx = 0
 
   for (const pos of TABLE_POSITIONS) {
-    const isVIP = pos.num <= 4 // Tables 1-4 are VIP (near stage)
+    const isVIP = pos.num <= 2 // Only Tables 1 and 2 are VIP
     const label = isVIP ? 'VIP' : undefined
     const zone = isVIP ? 'vip' : 'main'
     const guests = getGuests(nameIdx)
