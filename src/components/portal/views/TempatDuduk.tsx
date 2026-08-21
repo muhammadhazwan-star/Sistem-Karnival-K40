@@ -27,6 +27,7 @@ export function TempatDuduk() {
   const [adminMode, setAdminMode] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [adminPin, setAdminPin] = useState('')
+  const [adminUser, setAdminUser] = useState('')
   const [newGuestName, setNewGuestName] = useState('')
 
   const tables = seatingData?.tables ?? []
@@ -86,15 +87,18 @@ export function TempatDuduk() {
   }
   const handleTouchEnd = () => { touchState.current = null }
 
-  // Admin login with PIN 1234
-  const handleAdminLogin = () => {
-    if (adminPin === '1234') {
+  // Admin login — uses admin credentials via API
+  const handleAdminLogin = async () => {
+    try {
+      const result = await api.login({ username: adminUser.trim() || 'admin', password: adminPin })
+      usePortal.getState().setAdmin(result.token, result.name)
       setAdminMode(true)
       setShowAdminLogin(false)
       setAdminPin('')
+      setAdminUser('')
       toast.success('Mod Admin diaktifkan')
-    } else {
-      toast.error('PIN salah')
+    } catch {
+      toast.error('Kata laluan salah')
     }
   }
 
@@ -325,16 +329,6 @@ export function TempatDuduk() {
                 </div>
               </div>
 
-              {/* === RED CARPET AISLE (horizontal, center) === */}
-              <div className="absolute" style={{ left: '12%', right: '16%', top: '50%', height: '8%', transform: 'translateY(-50%)' }}>
-                <div className="w-full h-full bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded border-y-2 border-red-400/30" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-[7px] sm:text-[9px] text-yellow-200/40 uppercase tracking-[0.3em] font-serif italic">
-                    Laluan Karpet Merah
-                  </span>
-                </div>
-              </div>
-
               {/* === RIGHT ZONE: Holding Room, Dressing Room, Buffet Lines === */}
               {/* Holding Room 1 (top-right, light green) */}
               <div className="absolute" style={{ right: '2%', top: '10%', width: '12%', height: '15%' }}>
@@ -502,7 +496,7 @@ export function TempatDuduk() {
         </div>
       </div>
 
-      {/* Admin PIN login modal */}
+      {/* Admin login modal */}
       <AnimatePresence>
         {showAdminLogin && (
           <motion.div
@@ -524,22 +518,26 @@ export function TempatDuduk() {
                   <Lock className="h-5 w-5 text-gold" />
                 </div>
                 <h3 className="font-display text-lg font-bold text-gold-shimmer">Mod Admin</h3>
-                <p className="text-xs text-cream/60 mt-1">Masukkan PIN untuk urus tetamu</p>
+                <p className="text-xs text-cream/60 mt-1">Log masuk untuk urus tetamu</p>
               </div>
+              <Input
+                value={adminUser}
+                onChange={(e) => setAdminUser(e.target.value)}
+                placeholder="Nama Pengguna"
+                className="bg-maroon-dark/40 border-gold/25 text-cream placeholder:text-cream/30 mb-2"
+                autoFocus
+              />
               <Input
                 type="password"
                 value={adminPin}
                 onChange={(e) => setAdminPin(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAdminLogin()}
-                placeholder="PIN (4 digit)"
-                className="bg-maroon-dark/40 border-gold/25 text-cream placeholder:text-cream/30 mb-3 text-center tracking-[0.5em]"
-                maxLength={4}
-                autoFocus
+                placeholder="Kata Laluan"
+                className="bg-maroon-dark/40 border-gold/25 text-cream placeholder:text-cream/30 mb-3"
               />
               <Button onClick={handleAdminLogin} className="w-full bg-gradient-to-r from-gold to-gold-light text-maroon-dark hover:opacity-90">
                 Log Masuk
               </Button>
-              <p className="text-center text-[10px] text-cream/40 mt-2">Hint: 1234</p>
             </motion.div>
           </motion.div>
         )}

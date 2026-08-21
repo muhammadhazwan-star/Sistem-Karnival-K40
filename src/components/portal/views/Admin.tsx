@@ -428,17 +428,6 @@ function LoginScreen() {
               </>
             )}
           </Button>
-
-          <div className="rounded-lg bg-gold/10 border border-gold/20 p-3 text-center">
-            <p className="text-[10px] text-cream/60 uppercase tracking-wide mb-1">
-              Akaun Demo
-            </p>
-            <div className="flex items-center justify-center gap-3 text-xs">
-              <span className="text-gold-light font-mono">admin</span>
-              <span className="text-cream/30">/</span>
-              <span className="text-gold-light font-mono">admink40</span>
-            </div>
-          </div>
         </form>
 
         <p className="text-center text-[10px] text-cream/40 mt-4">
