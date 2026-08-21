@@ -59,16 +59,13 @@ export function ParkingRates() {
 
       {/* Thank you message */}
       <div className="px-4 py-3 border-t border-gold/20 bg-maroon-dark/40 text-center">
-        <div className="flex items-center justify-center gap-2 mb-1">
+        <div className="flex items-center justify-center gap-2">
           <Heart className="h-3 w-3 text-gold/50 fill-gold/30" />
           <p className="font-serif text-xs sm:text-sm italic text-gold-light/80 leading-relaxed">
             Terima kasih atas sokongan anda.
           </p>
           <Heart className="h-3 w-3 text-gold/50 fill-gold/30" />
         </div>
-        <p className="font-serif text-[11px] sm:text-xs italic text-cream/60 leading-relaxed">
-          Setiap sumbangan, sinar harapan untuk pendidikan.
-        </p>
       </div>
     </motion.div>
   )

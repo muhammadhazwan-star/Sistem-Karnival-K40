@@ -236,14 +236,14 @@ export function Beranda() {
           <VenueCard />
         </div>
 
-        {/* Seating layout preview — below venue card */}
-        <div className="mt-6 max-w-md mx-auto">
-          <SeatingPreview />
-        </div>
-
-        {/* Parking rates — below location */}
+        {/* Parking rates — above seating */}
         <div className="mt-6 max-w-md mx-auto">
           <ParkingRates />
+        </div>
+
+        {/* Seating layout preview — below parking */}
+        <div className="mt-6 max-w-md mx-auto">
+          <SeatingPreview />
         </div>
 
         {/* Lensa Al-Amin video */}
