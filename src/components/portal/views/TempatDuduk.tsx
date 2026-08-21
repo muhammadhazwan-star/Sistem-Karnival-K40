@@ -513,7 +513,7 @@ export function TempatDuduk() {
               <Button onClick={handleAdminLogin} className="w-full bg-gradient-to-r from-gold to-gold-light text-maroon-dark hover:opacity-90">
                 Log Masuk
               </Button>
-              <p className="text-center text-[10px] text-cream/40 mt-2">Hint: karnival40</p>
+              <p className="text-center text-[10px] text-cream/40 mt-2">Hint: admink40</p>
             </motion.div>
           </motion.div>
         )}

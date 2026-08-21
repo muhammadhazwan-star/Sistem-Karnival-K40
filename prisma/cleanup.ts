@@ -32,7 +32,7 @@ async function main() {
   console.log(`  - Setting: ${settingsCount} (kept)`)
 
   console.log('\n✅ Dummy data removed. Database is now clean.')
-  console.log('   Admin login still works: admin / karnival40')
+  console.log('   Admin login still works: admin / admink40')
 }
 
 main()

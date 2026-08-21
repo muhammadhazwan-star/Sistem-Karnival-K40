@@ -436,7 +436,7 @@ function LoginScreen() {
             <div className="flex items-center justify-center gap-3 text-xs">
               <span className="text-gold-light font-mono">admin</span>
               <span className="text-cream/30">/</span>
-              <span className="text-gold-light font-mono">karnival40</span>
+              <span className="text-gold-light font-mono">admink40</span>
             </div>
           </div>
         </form>

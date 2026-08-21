@@ -57,7 +57,7 @@ async function main() {
   await db.adminUser.create({
     data: {
       username: 'admin',
-      password: 'karnival40',
+      password: 'admink40',
       name: 'Urusetia Karnival',
       role: 'admin',
     },
