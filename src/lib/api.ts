@@ -30,6 +30,25 @@ export const api = {
   live: () => request<{ posts: any[] }>('/live'),
   seating: () => request<{ tables: any[] }>('/seating'),
 
+  // Admin seating management
+  adminAddGuest: (token: string, tableId: string, guestName: string) =>
+    request<any>('/admin/seating', {
+      method: 'POST',
+      body: JSON.stringify({ tableId, guestName }),
+      headers: { 'x-admin-token': token },
+    }),
+  adminDeleteGuest: (token: string, tableId: string, guestIndex: number) =>
+    request<any>(`/admin/seating?tableId=${tableId}&guestIndex=${guestIndex}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-token': token },
+    }),
+  adminSetCapacity: (token: string, tableId: string, capacity: number) =>
+    request<any>('/admin/seating', {
+      method: 'PUT',
+      body: JSON.stringify({ tableId, capacity }),
+      headers: { 'x-admin-token': token },
+    }),
+
   // Public submissions
   uploadPhoto: async (data: FormData) => {
     const res = await fetch(`${BASE}/gallery`, { method: 'POST', body: data })

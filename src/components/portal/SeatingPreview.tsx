@@ -6,6 +6,7 @@ import {
   Armchair, X, Users, Crown, Search, Sparkles, ChevronRight,
 } from 'lucide-react'
 import { useSeating } from '@/hooks/use-data'
+import { usePortal } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -45,7 +46,7 @@ export function SeatingPreview() {
           <div className="flex items-center justify-center gap-2">
             <Sparkles className="h-3 w-3 text-gold animate-twinkle" />
             <span className="font-display text-xs sm:text-sm font-bold text-gold-shimmer tracking-wide">
-              KEDUDUKAN MEJA
+              KEDUDUKAN MEJA · 60 MEJA
             </span>
             <Sparkles className="h-3 w-3 text-gold animate-twinkle" />
           </div>
@@ -76,7 +77,7 @@ export function SeatingPreview() {
               </div>
 
               {/* Tables */}
-              {tables.slice(0, 30).map((table: any, i: number) => {
+              {tables.slice(0, 60).map((table: any, i: number) => {
                 const isVIP = table.zone === 'vip'
                 return (
                   <div
@@ -109,14 +110,14 @@ export function SeatingPreview() {
         {/* Button */}
         <div className="p-3">
           <Button
-            onClick={() => setModalOpen(true)}
+            onClick={() => usePortal.getState().setView('tempat-duduk')}
             className="w-full bg-gradient-to-r from-gold to-gold-light text-maroon-dark hover:opacity-90 font-semibold"
           >
             <Armchair className="h-4 w-4 mr-2" /> Ketahui Meja Anda
             <ChevronRight className="h-4 w-4 ml-2" />
           </Button>
           <p className="text-center text-[10px] text-cream/40 mt-2">
-            Klik untuk cari kedudukan meja anda
+            Klik untuk cari kedudukan meja anda (60 meja)
           </p>
         </div>
       </motion.div>
