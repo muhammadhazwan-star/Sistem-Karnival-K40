@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useRef, useMemo, useCallback } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Armchair, X, Search, Users, Crown, Music, UtensilsCrossed,
-  DoorOpen, Sparkles, Plus, Trash2, Settings, Lock, ZoomIn, ZoomOut, Shield, Volume2,
+  Armchair, X, Search, Users, Crown, Plus, Trash2, Lock,
+  ZoomIn, ZoomOut, Shield, Gift, UtensilsCrossed, DoorOpen, Music,
 } from 'lucide-react'
 import { useSeating } from '@/hooks/use-data'
 import { usePortal } from '@/lib/store'
@@ -16,7 +16,7 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
 export function TempatDuduk() {
-  const { data: seatingData, loading, error, refetch, setData } = useSeating()
+  const { data: seatingData, loading, error, refetch } = useSeating()
   const { adminToken } = usePortal()
   const [selected, setSelected] = useState<any | null>(null)
   const [search, setSearch] = useState('')
@@ -26,12 +26,11 @@ export function TempatDuduk() {
   const dragStart = useRef({ x: 0, y: 0 })
   const [adminMode, setAdminMode] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
-  const [adminPass, setAdminPass] = useState('')
+  const [adminPin, setAdminPin] = useState('')
   const [newGuestName, setNewGuestName] = useState('')
 
   const tables = seatingData?.tables ?? []
 
-  // Search results
   const searchResults = useMemo(() => {
     if (!search.trim()) return null
     const q = search.toLowerCase()
@@ -43,13 +42,11 @@ export function TempatDuduk() {
       .filter((r: any) => r.matches.length > 0)
   }, [search, tables])
 
-  // Highlighted table from search
   const highlightedTableNum = useMemo(() => {
     if (!searchResults || searchResults.length === 0) return null
     return searchResults[0].table.tableNumber
   }, [searchResults])
 
-  // Zoom controls
   const handleZoomIn = () => setZoom((z) => Math.min(z + 0.25, 3))
   const handleZoomOut = () => {
     setZoom((z) => Math.max(z - 0.25, 1))
@@ -57,7 +54,6 @@ export function TempatDuduk() {
   }
   const handleReset = () => { setZoom(1); setPan({ x: 0, y: 0 }) }
 
-  // Pan handlers (for drag to pan when zoomed)
   const handleMouseDown = (e: React.MouseEvent) => {
     if (zoom <= 1) return
     setIsDragging(true)
@@ -69,7 +65,7 @@ export function TempatDuduk() {
   }
   const handleMouseUp = () => setIsDragging(false)
 
-  // Pinch to zoom (touch)
+  // Pinch to zoom
   const touchState = useRef<{ dist: number; zoom: number } | null>(null)
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
@@ -90,42 +86,58 @@ export function TempatDuduk() {
   }
   const handleTouchEnd = () => { touchState.current = null }
 
-  // Admin login
-  const handleAdminLogin = async () => {
-    try {
-      const result = await api.login({ username: 'admin', password: adminPass })
-      usePortal.getState().setAdmin(result.token, result.name)
+  // Admin login with PIN 1234
+  const handleAdminLogin = () => {
+    if (adminPin === '1234') {
       setAdminMode(true)
       setShowAdminLogin(false)
-      setAdminPass('')
+      setAdminPin('')
       toast.success('Mod Admin diaktifkan')
-    } catch {
-      toast.error('Kata laluan salah')
+    } else {
+      toast.error('PIN salah')
     }
   }
 
-  // Admin: add guest
+  // Admin: add guest (uses Supabase if adminToken, else LocalStorage)
   const handleAddGuest = async (tableId: string) => {
-    if (!newGuestName.trim() || !adminToken) return
-    try {
-      await api.adminAddGuest(adminToken, tableId, newGuestName.trim())
+    if (!newGuestName.trim()) return
+    if (adminToken) {
+      try {
+        await api.adminAddGuest(adminToken, tableId, newGuestName.trim())
+        setNewGuestName('')
+        refetch()
+        toast.success('Tetamu ditambah')
+      } catch (e: any) {
+        toast.error(e.message)
+      }
+    } else {
+      // LocalStorage fallback
+      const key = `seating-table-${tableId}`
+      const existing = JSON.parse(localStorage.getItem(key) || '[]')
+      existing.push(newGuestName.trim())
+      localStorage.setItem(key, JSON.stringify(existing))
       setNewGuestName('')
-      refetch()
-      toast.success('Tetamu ditambah')
-    } catch (e: any) {
-      toast.error(e.message)
+      setSelected({ ...selected, guests: [...(selected.guests || []), newGuestName.trim()] })
+      toast.success('Tetamu ditambah (LocalStorage)')
     }
   }
 
-  // Admin: delete guest
   const handleDeleteGuest = async (tableId: string, guestIndex: number) => {
-    if (!adminToken) return
-    try {
-      await api.adminDeleteGuest(adminToken, tableId, guestIndex)
-      refetch()
-      toast.success('Tetamu dipadam')
-    } catch (e: any) {
-      toast.error(e.message)
+    if (adminToken) {
+      try {
+        await api.adminDeleteGuest(adminToken, tableId, guestIndex)
+        refetch()
+        toast.success('Tetamu dipadam')
+      } catch (e: any) {
+        toast.error(e.message)
+      }
+    } else {
+      const key = `seating-table-${tableId}`
+      const existing = JSON.parse(localStorage.getItem(key) || '[]')
+      existing.splice(guestIndex, 1)
+      localStorage.setItem(key, JSON.stringify(existing))
+      setSelected({ ...selected, guests: selected.guests.filter((_: string, i: number) => i !== guestIndex) })
+      toast.success('Tetamu dipadam (LocalStorage)')
     }
   }
 
@@ -143,10 +155,10 @@ export function TempatDuduk() {
           <span className="text-xs text-gold-light">Pelan Tempat Duduk</span>
         </div>
         <h1 className="font-display text-xl sm:text-3xl font-bold text-gold-shimmer">
-          Carta Tempat Duduk
+          Majestic Hall — 60 Meja
         </h1>
         <p className="mt-1 text-xs sm:text-sm text-cream/60">
-          Dewan Majestic Elissa Garden · 60 Meja
+          Dewan Majestic Elissa Garden · Karnival 40 Tahun PPAAB
         </p>
       </div>
 
@@ -167,7 +179,7 @@ export function TempatDuduk() {
               <Shield className="h-3.5 w-3.5" /> Mod Admin
             </span>
             <Button
-              onClick={() => { setAdminMode(false); usePortal.getState().logoutAdmin() }}
+              onClick={() => setAdminMode(false)}
               variant="outline"
               size="sm"
               className="border-red-400/40 text-red-300 hover:bg-red-500/10"
@@ -236,12 +248,12 @@ export function TempatDuduk() {
         </button>
         {zoom !== 1 && (
           <button onClick={handleReset} className="rounded-full glass p-2 text-gold hover:bg-gold/10 transition" aria-label="Reset">
-            <Settings className="h-4 w-4" />
+            <Armchair className="h-4 w-4" />
           </button>
         )}
       </div>
 
-      {/* Floor plan */}
+      {/* Floor plan — matches image 1:1 */}
       {loading ? (
         <Skeleton className="h-[500px] rounded-3xl bg-maroon/30" />
       ) : error ? (
@@ -253,21 +265,16 @@ export function TempatDuduk() {
         </div>
       ) : (
         <div className="relative glass-strong rounded-2xl border-2 border-gold/30 overflow-hidden">
-          {/* Title bar */}
-          <div className="relative bg-gradient-to-r from-maroon-deep via-burgundy to-maroon-deep py-2 px-4 text-center border-b border-gold/20">
-            <div className="flex items-center justify-center gap-2">
-              <Sparkles className="h-3 w-3 text-gold animate-twinkle" />
-              <h2 className="font-display text-xs sm:text-sm font-bold text-gold-shimmer tracking-wide">
-                MAJESTIC HALL — 60 MEJA
-              </h2>
-              <Sparkles className="h-3 w-3 text-gold animate-twinkle" />
-            </div>
-          </div>
+          {/* Dimension markers (green text like image) */}
+          <div className="absolute top-1 left-1/2 -translate-x-1/2 z-30 text-[8px] text-emerald-400/60 font-mono">137'ft</div>
+          <div className="absolute top-1/2 left-1 -translate-y-1/2 z-30 text-[8px] text-emerald-400/60 font-mono" style={{ writingMode: 'vertical-rl' }}>23'ft</div>
+          <div className="absolute top-1/2 right-1 -translate-y-1/2 z-30 text-[8px] text-emerald-400/60 font-mono" style={{ writingMode: 'vertical-rl' }}>13'ft</div>
+          <div className="absolute bottom-1 left-1/2 -translate-x-1/2 z-30 text-[8px] text-emerald-400/60 font-mono">97'ft</div>
 
-          {/* Scrollable floor plan area */}
+          {/* Floor plan canvas */}
           <div
-            className="relative w-full overflow-hidden bg-gradient-to-br from-maroon-dark via-maroon to-maroon-deep"
-            style={{ aspectRatio: '16/10', minHeight: '350px' }}
+            className="relative w-full overflow-hidden"
+            style={{ aspectRatio: '16/10', minHeight: '400px', backgroundColor: '#3a3a3a' }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -277,85 +284,106 @@ export function TempatDuduk() {
             onTouchEnd={handleTouchEnd}
           >
             <div className="absolute inset-0 origin-center transition-transform" style={containerStyle}>
-              {/* Grid background */}
+              {/* Grid */}
               <div
                 className="absolute inset-0 opacity-5"
                 style={{
                   backgroundImage: `
-                    linear-gradient(rgba(212,175,55,0.3) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(212,175,55,0.3) 1px, transparent 1px)
+                    linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)
                   `,
-                  backgroundSize: '40px 40px',
+                  backgroundSize: '30px 30px',
                 }}
               />
 
-              {/* Stage (left side, spanning full height) */}
-              <div className="absolute left-1 top-3 bottom-3 w-[10%] flex flex-col gap-1.5">
-                <div className="flex-1 rounded-lg bg-maroon-dark/60 border border-gold/30 flex items-center justify-center p-1">
-                  <Music className="h-3 w-3 text-gold/60 mb-0.5" />
-                  <span className="text-[6px] sm:text-[8px] text-gold/60 uppercase tracking-wide absolute" style={{ writingMode: 'vertical-rl' }}>Artis Room</span>
-                </div>
-                <div className="flex-[3] rounded-lg bg-gradient-to-br from-red-900 to-red-950 border-2 border-gold/40 flex items-center justify-center overflow-hidden relative">
-                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-r from-red-700 to-transparent" />
-                  <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-l from-red-700 to-transparent" />
-                  <span className="font-display text-[8px] sm:text-[10px] font-bold text-gold/80 uppercase tracking-widest" style={{ writingMode: 'vertical-rl' }}>
-                    PENTAS / STAGE
+              {/* === STAGE (left, grey rectangle) === */}
+              <div className="absolute" style={{ left: '2%', top: '15%', width: '8%', height: '70%' }}>
+                <div className="w-full h-full rounded bg-gray-400/60 border-2 border-gray-500/50 flex items-center justify-center">
+                  <span className="font-display text-[8px] sm:text-[10px] font-bold text-gray-700 uppercase tracking-widest" style={{ writingMode: 'vertical-rl' }}>
+                    STAGE
                   </span>
                 </div>
-                <div className="flex-1 rounded-lg bg-maroon-dark/60 border border-gold/30 flex items-center justify-center p-1">
-                  <Volume2 className="h-3 w-3 text-gold/60" />
-                  <span className="text-[6px] sm:text-[8px] text-gold/60 uppercase tracking-wide absolute" style={{ writingMode: 'vertical-rl' }}>AV Room</span>
+              </div>
+
+              {/* === GIFT TABLES (blue rectangles) === */}
+              {/* Top Gift Table — adjacent to top-right of Stage */}
+              <div className="absolute" style={{ left: '11%', top: '18%', width: '3%', height: '12%' }}>
+                <div className="w-full h-full rounded bg-[#00AEEF]/80 border border-blue-400 flex items-center justify-center">
+                  <Gift className="h-2.5 w-2.5 text-white" />
+                </div>
+              </div>
+              {/* Bottom-Left Gift Table — along bottom-left wall */}
+              <div className="absolute" style={{ left: '11%', top: '70%', width: '3%', height: '12%' }}>
+                <div className="w-full h-full rounded bg-[#00AEEF]/80 border border-blue-400 flex items-center justify-center">
+                  <Gift className="h-2.5 w-2.5 text-white" />
+                </div>
+              </div>
+              {/* Bottom-Right Gift Table — adjacent to bottom-right of Stage */}
+              <div className="absolute" style={{ left: '7%', top: '82%', width: '3%', height: '8%' }}>
+                <div className="w-full h-full rounded bg-[#00AEEF]/80 border border-blue-400 flex items-center justify-center">
+                  <Gift className="h-2.5 w-2.5 text-white" />
                 </div>
               </div>
 
-              {/* Red carpet aisle (horizontal, center) */}
-              <div className="absolute left-[12%] right-[14%] top-[42%] h-[10%] rounded">
-                <div className="w-full h-full bg-gradient-to-r from-red-800/60 via-red-700/70 to-red-800/60 rounded border-y-2 border-gold/20" />
+              {/* === RED CARPET AISLE (horizontal, center) === */}
+              <div className="absolute" style={{ left: '12%', right: '16%', top: '50%', height: '8%', transform: 'translateY(-50%)' }}>
+                <div className="w-full h-full bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded border-y-2 border-red-400/30" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-[7px] sm:text-[9px] text-gold/30 uppercase tracking-[0.3em] font-serif italic">Laluan Karpet Merah</span>
+                  <span className="text-[7px] sm:text-[9px] text-yellow-200/40 uppercase tracking-[0.3em] font-serif italic">
+                    Laluan Karpet Merah
+                  </span>
                 </div>
               </div>
 
-              {/* Right side: Buffet Lines, Holding Room, Dressing Room */}
-              <div className="absolute right-1 top-3 bottom-3 w-[12%] flex flex-col gap-1.5">
-                {/* Holding Room (top right) */}
-                <div className="flex-1 rounded-lg bg-emerald-900/30 border border-emerald-400/40 flex items-center justify-center p-1">
+              {/* === RIGHT ZONE: Holding Room, Dressing Room, Buffet Lines === */}
+              {/* Holding Room 1 (top-right, light green) */}
+              <div className="absolute" style={{ right: '2%', top: '10%', width: '12%', height: '15%' }}>
+                <div className="w-full h-full rounded-lg bg-[#90EE90]/30 border-2 border-[#90EE90]/50 flex items-center justify-center p-1">
                   <div className="text-center">
-                    <DoorOpen className="h-3 w-3 text-emerald-300/70 mx-auto mb-0.5" />
-                    <span className="text-[6px] sm:text-[7px] text-emerald-300/70 uppercase tracking-wide">Holding Room</span>
-                  </div>
-                </div>
-                {/* Buffet Line 1 */}
-                <div className="rounded-lg bg-amber-900/30 border border-amber-400/30 flex items-center justify-center p-1">
-                  <div className="text-center">
-                    <UtensilsCrossed className="h-3 w-3 text-amber-300/70 mx-auto mb-0.5" />
-                    <span className="text-[6px] sm:text-[7px] text-amber-300/70 uppercase tracking-wide">Buffet Line</span>
-                  </div>
-                </div>
-                {/* Buffet Line 2 */}
-                <div className="rounded-lg bg-amber-900/30 border border-amber-400/30 flex items-center justify-center p-1">
-                  <div className="text-center">
-                    <UtensilsCrossed className="h-3 w-3 text-amber-300/70 mx-auto mb-0.5" />
-                    <span className="text-[6px] sm:text-[7px] text-amber-300/70 uppercase tracking-wide">Buffet Line</span>
-                  </div>
-                </div>
-                {/* Buffet Line 3 */}
-                <div className="rounded-lg bg-amber-900/30 border border-amber-400/30 flex items-center justify-center p-1">
-                  <div className="text-center">
-                    <UtensilsCrossed className="h-3 w-3 text-amber-300/70 mx-auto mb-0.5" />
-                    <span className="text-[6px] sm:text-[7px] text-amber-300/70 uppercase tracking-wide">Buffet Line</span>
-                  </div>
-                </div>
-                {/* Dressing Room (bottom right) */}
-                <div className="flex-1 rounded-lg bg-yellow-900/30 border border-yellow-400/40 flex items-center justify-center p-1">
-                  <div className="text-center">
-                    <Users className="h-3 w-3 text-yellow-300/70 mx-auto mb-0.5" />
-                    <span className="text-[6px] sm:text-[7px] text-yellow-300/70 uppercase tracking-wide">Dressing Room</span>
+                    <DoorOpen className="h-3 w-3 text-green-300/70 mx-auto mb-0.5" />
+                    <span className="text-[6px] sm:text-[8px] text-green-200/80 uppercase tracking-wide">Holding Room 1</span>
                   </div>
                 </div>
               </div>
+              {/* Dressing Room 1 (bottom-right, light yellow) */}
+              <div className="absolute" style={{ right: '2%', bottom: '10%', width: '12%', height: '15%' }}>
+                <div className="w-full h-full rounded-lg bg-[#FFFACD]/30 border-2 border-[#FFFACD]/50 flex items-center justify-center p-1">
+                  <div className="text-center">
+                    <Users className="h-3 w-3 text-yellow-200/70 mx-auto mb-0.5" />
+                    <span className="text-[6px] sm:text-[8px] text-yellow-100/80 uppercase tracking-wide">Dressing Room 1</span>
+                  </div>
+                </div>
+              </div>
+              {/* Buffet Line — Top wall */}
+              <div className="absolute" style={{ left: '20%', top: '4%', width: '15%', height: '3%' }}>
+                <div className="w-full h-full rounded bg-[#4A4A4A]/60 border border-gray-600/50 flex items-center justify-center">
+                  <span className="text-[6px] text-gray-300/70 uppercase tracking-wide flex items-center gap-0.5">
+                    <UtensilsCrossed className="h-2 w-2" /> Buffet Line
+                  </span>
+                </div>
+              </div>
+              {/* Buffet Line — Bottom wall */}
+              <div className="absolute" style={{ left: '20%', bottom: '4%', width: '15%', height: '3%' }}>
+                <div className="w-full h-full rounded bg-[#4A4A4A]/60 border border-gray-600/50 flex items-center justify-center">
+                  <span className="text-[6px] text-gray-300/70 uppercase tracking-wide flex items-center gap-0.5">
+                    <UtensilsCrossed className="h-2 w-2" /> Buffet Line
+                  </span>
+                </div>
+              </div>
+              {/* Buffet Line — Right divider top */}
+              <div className="absolute" style={{ right: '15%', top: '15%', width: '3%', height: '12%' }}>
+                <div className="w-full h-full rounded bg-[#4A4A4A]/60 border border-gray-600/50 flex items-center justify-center">
+                  <UtensilsCrossed className="h-2.5 w-2.5 text-gray-300/70" />
+                </div>
+              </div>
+              {/* Buffet Line — Right divider bottom */}
+              <div className="absolute" style={{ right: '15%', bottom: '15%', width: '3%', height: '12%' }}>
+                <div className="w-full h-full rounded bg-[#4A4A4A]/60 border border-gray-600/50 flex items-center justify-center">
+                  <UtensilsCrossed className="h-2.5 w-2.5 text-gray-300/70" />
+                </div>
+              </div>
 
-              {/* Tables */}
+              {/* === 60 TABLES === */}
               {tables.map((table: any, i: number) => {
                 const isVIP = table.zone === 'vip'
                 const isHighlighted = highlightedTableNum === table.tableNumber
@@ -364,8 +392,8 @@ export function TempatDuduk() {
                     key={table.id}
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: Math.min(i * 0.01, 0.5) }}
-                    whileHover={{ scale: 1.2, zIndex: 20 }}
+                    transition={{ delay: Math.min(i * 0.005, 0.3) }}
+                    whileHover={{ scale: 1.25, zIndex: 20 }}
                     onClick={() => setSelected(table)}
                     className={cn(
                       'absolute -translate-x-1/2 -translate-y-1/2 group z-10',
@@ -375,41 +403,38 @@ export function TempatDuduk() {
                     aria-label={`Meja ${table.tableNumber}`}
                   >
                     <div className="relative">
-                      {/* Glow for VIP or highlighted */}
+                      {/* Glow */}
                       {(isVIP || isHighlighted) && (
                         <div className={cn(
                           'absolute -inset-1 rounded-full blur-sm animate-pulse',
-                          isHighlighted ? 'bg-blue-400/40' : 'bg-gold/30'
+                          isHighlighted ? 'bg-blue-400/50' : 'bg-gold/40'
                         )} />
                       )}
-                      {/* Table circle */}
+                      {/* Table circle — cream/beige like image */}
                       <div
                         className={cn(
-                          'relative flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full border-2 transition-all',
+                          'relative flex h-5 w-5 sm:h-7 sm:w-7 items-center justify-center rounded-full border-2 transition-all',
                           isHighlighted
-                            ? 'bg-gradient-to-br from-blue-400 to-blue-600 border-blue-300 ring-2 ring-blue-400/50'
+                            ? 'bg-blue-500 border-blue-300 ring-2 ring-blue-400/60'
                             : isVIP
                             ? 'bg-gradient-to-br from-gold to-gold-deep border-gold-light shadow-lg'
-                            : 'bg-gradient-to-br from-maroon to-maroon-dark border-gold/40 group-hover:border-gold group-hover:from-gold/20'
+                            : 'bg-[#F5E6D3] border-gray-600 group-hover:border-gold group-hover:bg-gold/20'
                         )}
                       >
                         <span className={cn(
-                          'font-display font-bold text-[7px] sm:text-[9px] tabular-nums',
-                          isHighlighted ? 'text-white' : isVIP ? 'text-maroon-dark' : 'text-gold-light'
+                          'font-display font-bold text-[6px] sm:text-[8px] tabular-nums',
+                          isHighlighted ? 'text-white' : isVIP ? 'text-maroon-dark' : 'text-gray-800'
                         )}>
                           {table.tableNumber}
                         </span>
                         {/* Chair dots around table */}
-                        {Array.from({ length: 8 }).map((_, ci) => {
-                          const angle = (ci / 8) * Math.PI * 2
-                          const r = 14
+                        {Array.from({ length: 10 }).map((_, ci) => {
+                          const angle = (ci / 10) * Math.PI * 2
+                          const r = 13
                           return (
                             <div
                               key={ci}
-                              className={cn(
-                                'absolute h-0.5 w-0.5 sm:h-1 sm:w-1 rounded-full',
-                                isVIP ? 'bg-gold-light' : 'bg-cream/30'
-                              )}
+                              className="absolute h-0.5 w-0.5 sm:h-1 sm:w-1 rounded-full bg-gray-500/60"
                               style={{
                                 left: `calc(50% + ${Math.cos(angle) * r}px - 1px)`,
                                 top: `calc(50% + ${Math.sin(angle) * r}px - 1px)`,
@@ -420,10 +445,10 @@ export function TempatDuduk() {
                       </div>
                       {/* VIP crown */}
                       {isVIP && (
-                        <Crown className="absolute -top-1.5 -right-1.5 h-2.5 w-2.5 sm:h-3 sm:w-3 text-gold fill-gold drop-shadow" />
+                        <Crown className="absolute -top-1.5 -right-1.5 h-2 w-2 sm:h-2.5 sm:w-2.5 text-gold fill-gold drop-shadow" />
                       )}
                       {/* Hover label */}
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0.5 whitespace-nowrap rounded bg-maroon-dark/90 px-1.5 py-0.5 text-[7px] sm:text-[8px] text-gold opacity-0 group-hover:opacity-100 transition pointer-events-none z-30">
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0.5 whitespace-nowrap rounded bg-maroon-dark/95 px-1.5 py-0.5 text-[7px] sm:text-[8px] text-gold opacity-0 group-hover:opacity-100 transition pointer-events-none z-30">
                         Meja {table.tableNumber}
                         {table.guests?.length > 0 && ` · ${table.guests.length} tetamu`}
                       </div>
@@ -441,7 +466,7 @@ export function TempatDuduk() {
               <span className="text-[9px] text-cream/60">VIP</span>
             </div>
             <div className="flex items-center gap-1">
-              <div className="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-maroon to-maroon-dark border border-gold/40" />
+              <div className="h-2.5 w-2.5 rounded-full bg-[#F5E6D3] border border-gray-600" />
               <span className="text-[9px] text-cream/60">Tetamu</span>
             </div>
             <div className="flex items-center gap-1">
@@ -477,7 +502,7 @@ export function TempatDuduk() {
         </div>
       </div>
 
-      {/* Admin login modal */}
+      {/* Admin PIN login modal */}
       <AnimatePresence>
         {showAdminLogin && (
           <motion.div
@@ -499,21 +524,22 @@ export function TempatDuduk() {
                   <Lock className="h-5 w-5 text-gold" />
                 </div>
                 <h3 className="font-display text-lg font-bold text-gold-shimmer">Mod Admin</h3>
-                <p className="text-xs text-cream/60 mt-1">Masukkan kata laluan untuk urus tetamu</p>
+                <p className="text-xs text-cream/60 mt-1">Masukkan PIN untuk urus tetamu</p>
               </div>
               <Input
                 type="password"
-                value={adminPass}
-                onChange={(e) => setAdminPass(e.target.value)}
+                value={adminPin}
+                onChange={(e) => setAdminPin(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAdminLogin()}
-                placeholder="Kata laluan"
-                className="bg-maroon-dark/40 border-gold/25 text-cream placeholder:text-cream/30 mb-3"
+                placeholder="PIN (4 digit)"
+                className="bg-maroon-dark/40 border-gold/25 text-cream placeholder:text-cream/30 mb-3 text-center tracking-[0.5em]"
+                maxLength={4}
                 autoFocus
               />
               <Button onClick={handleAdminLogin} className="w-full bg-gradient-to-r from-gold to-gold-light text-maroon-dark hover:opacity-90">
                 Log Masuk
               </Button>
-              <p className="text-center text-[10px] text-cream/40 mt-2">Hint: admink40</p>
+              <p className="text-center text-[10px] text-cream/40 mt-2">Hint: 1234</p>
             </motion.div>
           </motion.div>
         )}
@@ -590,10 +616,7 @@ export function TempatDuduk() {
                       <span className="text-sm text-cream/85 flex-1">{guest}</span>
                       {adminMode && (
                         <button
-                          onClick={() => {
-                            handleDeleteGuest(selected.id, i)
-                            setSelected({ ...selected, guests: selected.guests.filter((_: string, idx: number) => idx !== i) })
-                          }}
+                          onClick={() => handleDeleteGuest(selected.id, i)}
                           className="text-red-400/60 hover:text-red-400 transition"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -608,7 +631,7 @@ export function TempatDuduk() {
                   )}
                 </div>
 
-                {/* Admin: Add guest form */}
+                {/* Admin: Add guest */}
                 {adminMode && (
                   <div className="mt-4 pt-4 border-t border-gold/20">
                     <div className="flex gap-2">
@@ -643,7 +666,7 @@ export function TempatDuduk() {
                 </span>
                 {adminMode && (
                   <span className="text-emerald-400/70 flex items-center gap-1">
-                    <Shield className="h-3 w-3" /> Mod Admin Aktif
+                    <Shield className="h-3 w-3" /> Mod Admin
                   </span>
                 )}
               </div>
