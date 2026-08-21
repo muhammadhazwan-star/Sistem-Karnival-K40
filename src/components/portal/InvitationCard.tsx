@@ -113,7 +113,7 @@ export function InvitationCard() {
               transition={{ delay: 0.7 }}
               className="font-display text-2xl sm:text-3xl font-bold text-gold-gradient mt-3 mb-4"
             >
-              Majlis Makan Malam Amal Karnival 40 Tahun kami,
+              Majlis Makan Malam Amal Karnival 40 Tahun,
             </motion.h4>
 
             {/* Time badge */}

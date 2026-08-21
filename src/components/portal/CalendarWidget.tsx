@@ -51,7 +51,7 @@ export function CalendarWidget() {
             Ogos 2026
           </span>
         </div>
-        <span className="text-[10px] text-cream/50">Hari Karnival</span>
+        <span className="text-[10px] text-cream/50">Majlis Makan Malam</span>
       </div>
 
       {/* Day headers */}
@@ -112,7 +112,7 @@ export function CalendarWidget() {
       <div className="mt-3 pt-3 border-t border-gold/10 flex items-center justify-center gap-3 text-[10px] text-cream/60">
         <div className="flex items-center gap-1.5">
           <Heart className="h-3 w-3 text-red-500 fill-red-500" />
-          <span>Hari Karnival</span>
+          <span>Majlis Makan Malam</span>
         </div>
         <div className="w-px h-3 bg-gold/20" />
         <div className="flex items-center gap-1.5">

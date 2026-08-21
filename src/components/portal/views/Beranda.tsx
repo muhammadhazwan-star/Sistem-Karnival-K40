@@ -247,73 +247,23 @@ export function Beranda() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-10">
-        {/* What's Happening Now */}
+        {/* Highlight Karnival 40 Tahun */}
         <section>
           <SectionHeader
-            icon={Radio}
-            title="What's Happening Now"
-            subtitle="Status aktiviti terkini karnival"
+            icon={Sparkles}
+            title="Highlight Karnival 40 Tahun"
+            subtitle="Menyoroti momen istimewa sepanjang Karnival 40 Tahun PPAAB"
           />
-          <div className="grid gap-4 sm:grid-cols-2 mt-6">
-            {/* Now Happening */}
-            <div className="glass rounded-2xl p-5 border-l-4 border-l-emerald-400">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 live-dot" />
-                <span className="text-xs uppercase tracking-wider text-emerald-300 font-semibold">Now Happening</span>
-              </div>
-              {liveActivity || currentSchedule ? (
-                <div>
-                  <h3 className="font-display text-lg text-gold-light">
-                    {(liveActivity || currentSchedule)?.name || (liveActivity || currentSchedule)?.title}
-                  </h3>
-                  <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-cream/70">
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {fmtTime((liveActivity || currentSchedule)?.startTime || (liveActivity || currentSchedule)?.time)}
-                    </span>
-                    {((liveActivity || currentSchedule) as any)?.location && (
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {((liveActivity || currentSchedule) as any).location}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="text-sm text-cream/50">
-                  Tiada aktiviti sedang berlangsung sekarang.
-                </div>
-              )}
-            </div>
-            {/* Up Next */}
-            <div className="glass rounded-2xl p-5 border-l-4 border-l-gold">
-              <div className="flex items-center gap-2 mb-3">
-                <ChevronRight className="h-3.5 w-3.5 text-gold" />
-                <span className="text-xs uppercase tracking-wider text-gold font-semibold">Up Next</span>
-              </div>
-              {upcomingActivity || nextSchedule ? (
-                <div>
-                  <h3 className="font-display text-lg text-gold-light">
-                    {(upcomingActivity || nextSchedule)?.name || (upcomingActivity || nextSchedule)?.title}
-                  </h3>
-                  <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-cream/70">
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {fmtTime((upcomingActivity || nextSchedule)?.startTime || (upcomingActivity || nextSchedule)?.time)}
-                    </span>
-                    {((upcomingActivity || nextSchedule) as any)?.location && (
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {((upcomingActivity || nextSchedule) as any).location}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="text-sm text-cream/50">
-                  Atur cara karnival telah tamat. Terima kasih!
-                </div>
-              )}
+          <div className="mt-6 relative glass-strong rounded-2xl overflow-hidden border border-gold/30">
+            <div className="relative w-full" style={{ aspectRatio: '16/10', minHeight: '400px' }}>
+              <iframe
+                src="https://simplebooklet.com/eventhighlightskarnival40tahunppaab"
+                title="Highlight Karnival 40 Tahun PPAAB"
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 'none' }}
+                allow="fullscreen"
+                loading="lazy"
+              />
             </div>
           </div>
         </section>
